@@ -1,6 +1,6 @@
 from .idioma import lazy_gettext
 
-#teste github
+
 """
     All constants and messages definitions go here
 

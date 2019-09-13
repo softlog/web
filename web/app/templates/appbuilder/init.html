@@ -1,0 +1,79 @@
+﻿{% import 'appbuilder/baselib.html' as baselib with context %}
+{% if appbuilder %}
+    {% set app_name = appbuilder.app_name %}
+{% endif %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block page_title %}{{app_name}}{% endblock %}</title>
+        {% block head_meta %}
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+            <META http-equiv="Last-Modified" content="Tue, 17 May 2016 22:58:04 GMT" />
+            <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+            <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+            <META http-equiv="Pragma" content="no-cache" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <!-- Meta, title, CSS, favicons, etc. -->
+            <meta name="description" content=""/>
+            <meta name="author" content=""/>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% endblock %}
+
+        {% block head_css %}
+            <link href="{{url_for('static.static',filename='libs/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet"/>
+            <!-- <link href="{{url_for('static.static',filename='libs/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet"/>-->
+            <link href="{{url_for('static.static',filename='scripts/node_modules/gridstack/dist/gridstack.min.css')}}" rel="stylesheet"/>
+            <link href="{{url_for('static.static',filename='libs/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"/>            
+            <link href="{{url_for('static.static',filename='datepicker/bootstrap-datepicker.css')}}" rel="stylesheet"/>
+            <link href="{{url_for('static.static',filename='select2/select2.css')}}" rel="stylesheet"/>
+            <link href="{{url_for('static.static',filename='css/flags/flags16.css')}}" rel="stylesheet"/>
+            <link href="{{url_for('static.static',filename='css/ab.css')}}" rel="stylesheet"/>
+            <link href="{{url_for('static.static',filename='content/custom.css')}}" rel="stylesheet" />
+        {% endblock %}
+
+        {% block head_js %}            
+            <script src="{{url_for('static.static',filename='libs/jquery/dist/jquery.min.js')}}"></script>
+            <script src="{{url_for('static.static',filename='angular/angular.min.js')}}"></script>
+            <script src="{{url_for('static.static',filename='js/ab_filters.js')}}"></script>
+            <script src="{{url_for('static.static',filename='js/ab_actions.js')}}"></script>
+            <script src="{{url_for('static.static',filename='js/html5shiv.js')}}"></script>
+            <script src="{{url_for('static.static',filename='js/respond.min.js')}}"></script>
+        {% endblock %}
+
+        {% block add_head_js %}
+
+        {% endblock %}
+
+    </head>
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+
+        {% block tail_js %}
+            <script src="{{url_for('static.static',filename='libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+            <script src="{{url_for('static.static',filename='datepicker/bootstrap-datepicker.js')}}"></script>
+            <script src="{{url_for('static.static',filename='select2/select2.js')}}"></script>
+            <script src="{{url_for('static.static',filename='js/ab.js')}}"></script>
+            <script src="{{url_for('static.static',filename='libs/fastclick/lib/fastclick.js')}}"></script>
+            <!-- <script src="{{url_for('static.static',filename='libs/nprogress/nprogress.js')}}"></script>-->
+            <script src="{{url_for('static.static',filename='scripts/custom.js')}}"></script>
+            
+        {% endblock %}
+
+        {% block add_tail_js %}
+
+        {% endblock %}
+
+        {% block tail %}
+
+        {% endblock %}
+
+    </body>
+</html>

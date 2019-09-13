@@ -1,0 +1,71 @@
+<!-- top navigation -->
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav class="" role="navigation">
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            
+            <ul class="nav navbar-nav navbar-right">
+                {% if not current_user.is_anonymous() %}
+                <li class="">
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="username">{{g.user.first_name}}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li>
+                            <a href="{{appbuilder.get_url_for_userinfo}}"><i class=" fa fa-suitcase"></i>  {{"Profile"}}</a>
+                        <li>
+                            <a href="/permissions/list/"><i class="fa fa-cog"></i>  Configura&ccedil;&atilde;o</a>
+                        </li>
+                        <li>
+                            <a href="{{appbuilder.get_url_for_logout}}"><i class="fa fa-key"></i>  {{"Logout"}}</a>
+                        </li>
+                    </ul>
+                </li>
+                    {% if g.filial %}
+                    <li class="">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span>{{g.filial}}</span>
+                        </a>
+                        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                            {% for filial in g.user.filiais %}                            
+                                {% if filial != g.filial %}
+                                <li>
+                                    <a href="{{appbuilder.get_url_for_relogin(filial.codigo_empresa,filial.codigo_filial)}}">
+                                        <span>
+                                            <span>{{filial.nome_descritivo}}</span>
+                                            <span class="time">{{filial.codigo_empresa}}-{{filial.codigo_filial}}</span>
+                                        </span>
+                                        <span class="message">
+                                            {{filial.get_endereco_completo()}}
+                                        </span>
+                                    </a>
+                                </li>         
+                                {% endif %}                       
+                            {% endfor %}
+                            <li>
+                                <div class="text-center">
+                                    <a href="inbox.html">
+                                        <strong>See All Alerts</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                {% else %}
+                <li>
+                    <a href="{{appbuilder.get_url_for_login}}">
+                        <i class="fa fa-fw fa-sign-in"></i>{{"Login"}}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- /top navigation -->

@@ -1,0 +1,15 @@
+﻿
+
+{% macro set_style(url) %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{url}}" />
+{% endmacro %}
+
+{% macro set_javascript(url) %}
+<script src="{{url}}"></script>
+{% endmacro %}
+
+{% macro set_hello(name) %}
+<h1>Ola {{name}}</h1>
+{% endmacro %}
+
+

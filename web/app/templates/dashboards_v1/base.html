@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="shortcut icon" href="/files/static/img/flavor_icon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="/files/static/dashboards/libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="/files/static/dashboards/libs/nvd3/nv.d3.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/files/static/dashboards/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/files/static/dashboards/libs/c3/c3.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/scroller/1.4.2/css/scroller.dataTables.min.css">
+
+    <!-- Custom Theme Style -->
+    <link rel="stylesheet" href="/files/static/dashboards/content/custom.css">
+    <script>
+        //Lista para criacao de graficos sparkline
+        var list_sparkline = new Array();
+
+        //Lista para criacao de graficos morris
+        var list_chart_morris = new Array();
+
+        //Lista para criacao de graficos chartJs
+        var list_chartjs = new Array();
+
+        //Lista para criacao de graficos chartJs
+        var list_chartjs_plus = new Array();
+
+        //Lista para criacao de graficos chartJs
+        var list_gaugejs = new Array();
+
+        //Lista para criacao de graficos eCharts
+        var list_echarts = new Array();
+
+        //Lista para criacao de graficos eCharts
+        var list_datatable = new Array();
+    </script>
+
+    {% block head_html %}{% endblock %}
+
+    <title>Dashboards {{config.get('APP_NAME')}}</title>
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            {% block menu_lateral %}{% include 'dashboards_v1/menu_lateral.html' %}{% endblock %}
+            {% block menu_top %}{% include 'dashboards_v1/menu_top.html' %}{% endblock %}
+            <!-- page content -->
+            <div role="main" class="right_col">
+                {% block content %}{% endblock %}
+            </div>
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <a href="/">Softlog Tecnologia</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/files/static/dashboards/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="/files/static/dashboards/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/files/static/dashboards/libs/fastclick/lib/fastclick.js"></script>
+
+
+    <script src="/files/static/dashboards/libs/Chart.js/Chart.bundle.min.js"></script>
+    <!--<script src="/files/static/libs/Chart.js/src/Chart.LinearGauge.js"></script>-->
+    <!-- jQuery Sparklines -->
+    <script src="/files/static/dashboards/libs/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- morris.js -->
+    <script src="/files/static/dashboards/libs/raphael/raphael-2.1.4.min.js"></script>
+    <script src="/files/static/dashboards/libs/justgage.custom/justgage.custom.js"></script>
+    <script src="/files/static/dashboards/libs/morris.js/morris.min.js"></script>
+    
+    <!--Graficos D3-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src="/files/static/dashboards/libs/nvd3/nv.d3.min.js"></script>
+
+    <!-- easy-pie-chart -->
+    <script src="/files/static/dashboards/libs/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    
+    <!-- gauge.js -->
+    <script src="/files/static/dashboards/libs/gauge.js.custom/gauge.js.custom.js"></script>
+
+
+    <!-- Skycons -->
+    <script src="/files/static/dashboards/libs/skycons/skycons.js"></script>
+    <script src="/files/static/dashboards/scripts/custom.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/scroller/1.4.2/js/dataTables.scroller.min.js"></script>
+
+    {% block scripts %}{% endblock %}
+    <script>
+        //Renderizacao de Graficos Sparkline
+        $('document').ready(function () {
+            for (var i = 0; i < list_sparkline.length; i++) {
+                x = list_sparkline[i];
+                $("." + x.name).sparkline(x.data, x.options);
+            };
+        });
+    </script>
+
+    <!-- Renderizacao de Graficos ChartJs -->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_chartjs.length; i++) {
+                var y = list_chartjs[i];
+                var ctx = $('#' + y.name);
+                var mybarChart = new Chart(ctx, y.chart);
+            };
+        });
+    </script>
+
+    <!-- Renderizacao de Graficos GaugeJs -->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_gaugejs.length; i++) {
+
+                x = list_gaugejs[i];
+                eval("var " + x.name_class);
+                var g1 = new JustGage(x.chart);
+            };
+        });
+    </script>
+
+    <!-- Renderizacao de Data Tables -->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_datatable.length; i++) {
+                z = list_datatable[i];
+                $('#' + z.name).DataTable({
+                    //scrollY: '50vh',
+                    //"sScrollY": z.height + "px",
+                    scrollY: z.height,
+                    scroller: true,
+                    //scrollCollapse: true,
+                    animate: true,
+                    paging: true,
+                    searching: false,
+                    ordering: true,
+                    "bInfo": false,
+                    "aaSorting": [[z.column_order, z.type_order]]
+                });
+
+                $('#' + z.name + ' tbody').animate({
+                    scrollTop: $('#' + z.name + ' tbody').scrollTop() + 200
+                }, 200).delay(2800);
+
+                //$('#' + z.name + ' > tbody  > tr').each(function () {
+                //    $('html, body').animate({
+                //        scrollTop: $(this).offset().top
+                //    }, 200).delay(2800);
+                //})
+            };
+        });
+    </script>
+    <!--Renderizacao do Chart JS Bar Line-->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_chartjs_plus.length; i++) {
+
+                var t = list_chartjs_plus[i];
+                var ctx = document.getElementById(t.name).getContext("2d");
+                window.mybarlineChart = new Chart(ctx, t.chart);
+                window.mybarlineChart.update();
+            };
+        });
+    </script>    
+</body>
+</html>

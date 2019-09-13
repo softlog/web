@@ -1,0 +1,66 @@
+{% import 'frontend/general/lib.html' as lib %}
+
+{% set can_add = "Adicionar" | is_item_visible(modelview_name) %}
+{% set can_show = "Visualizar" | is_item_visible(modelview_name) %}
+{% set can_edit = "Editar" | is_item_visible(modelview_name) %}
+{% set can_delete = "Excluir" | is_item_visible(modelview_name) %}
+{% set actions = actions | get_actions_on_list(modelview_name) %}
+
+
+{% block list_header scoped %}
+{{ lib.render_list_header(title, can_add, page, page_size, count, filters, actions, modelview_name, include_cols, label_columns, form_fields, search_filters, active_filters) }}
+{% endblock %}
+
+{% if count > 0 %}
+
+    {% block table %}
+    {% endblock %}
+
+{{ lib.action_form(actions,modelview_name) }}
+<script language="javascript">
+        var modelActions = new AdminActions();
+</script>
+
+{% else %}
+<b>{{_("No records found")}}</b>
+{% endif %}
+
+
+<script>
+$(document).ready(function () {
+        var table = $('#table_id').DataTable({
+            searching: true,
+            paging: true,
+            ordering: true,
+            info: true,
+            dom: 'Bfrtip',
+            keys: true,
+            buttons: [
+                'excelHtml5',
+                'pdfHtml5',
+                'print',
+                'pageLength'
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
+            },
+            columnDefs: [
+                { width: 10, targets: 0 },
+                { width: 30, targets: 1 }
+                {% if actions %}
+                ,{ width: 30, targets: 2 }
+                {% endif %}
+        ],
+        });
+
+        $('#table_id tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>

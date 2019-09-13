@@ -1,0 +1,143 @@
+<div class="top_nav">    
+    <li class="nav_menu">
+        <nav role="navigation" class="">
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="">
+                    <a aria-expanded="false" data-toggle="dropdown" class="user-profile dropdown-toggle" href="javascript:;">
+                        {{m.user.nome_usuario}}
+                        <span class="fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li>
+                            <a href="/logout">Sair</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a aria-expanded="false" data-toggle="dropdown" class="user-profile dropdown-toggle" href="javascript:;">
+                        {% if session.codigo_filial_dashboard == '' %}
+                        Todas Filiais
+                        {% else %}
+                        {{session.codigo_filial_dashboard}}
+                        {% endif %}
+                        <span class="fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li>
+                            {% if session.get('codigo_empresa_dashboard') == '' %}
+                            <a href="/dashboards/reload_filiais/todos/todos/{{id_dashboard}}">Todas Filiais</a>
+                            {% else %}
+                            <a href="/dashboards/reload_filiais/{{session.get('codigo_empresa_dashboard')}}/todos/{{id_dashboard}}">Todas Filiais</a>
+                            {% endif %}
+                        </li>
+                        {% for filial in m.filiais %}
+                        <li>
+                            <a href="/dashboards/reload_filiais/{{filial.codigo_empresa}}/{{filial.codigo_filial}}/{{id_dashboard}}">{{filial.codigo_empresa}}-{{filial.codigo_filial}}-{{filial.nome_descritivo}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="">
+                    <a aria-expanded="false" data-toggle="dropdown" class="user-profile dropdown-toggle" href="javascript:;">
+                        {% if session.codigo_empresa_dashboard == '' %}
+                        Todas Empresas
+                        {% else %}
+                        {{session.codigo_empresa_dashboard}}
+                        {% endif %}
+                        <span class="fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li>
+                            <a href="/dashboards/reload_empresas/todos/{{id_dashboard}}">Todas Empresas</a>
+                        </li>
+                        {% for empresa in m.empresas %}
+                        <li>
+                            <a href="/dashboards/reload_empresas/{{empresa.codigo_empresa}}/{{id_dashboard}}">{{empresa.codigo_empresa}}-{{empresa.nome_fantasia}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+
+
+                <!--<li class="dropdown" role="presentation">
+        <a aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle info-number" href="javascript:;">
+            <i class="fa fa-envelope-o"></i>
+            <span class="badge bg-green">6</span>
+        </a>
+        <ul role="menu" class="dropdown-menu list-unstyled msg_list" id="menu1">
+            <li>
+                <a>
+                    <span class="image">
+                        <img alt="Profile Image" src="images/img.jpg">
+                    </span>
+                    <span>
+                        <span>John Smith</span>
+                        <span class="time">3 mins ago</span>
+                    </span>
+                    <span class="message">
+                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span class="image">
+                        <img alt="Profile Image" src="images/img.jpg">
+                    </span>
+                    <span>
+                        <span>m.nome_usuario</span>
+                        <span class="time">3 mins ago</span>
+                    </span>
+                    <span class="message">
+                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span class="image">
+                        <img alt="Profile Image" src="images/img.jpg">
+                    </span>
+                    <span>
+                        <span>John Smith</span>
+                        <span class="time">3 mins ago</span>
+                    </span>
+                    <span class="message">
+                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span class="image">
+                        <img alt="Profile Image" src="images/img.jpg">
+                    </span>
+                    <span>
+                        <span>John Smith</span>
+                        <span class="time">3 mins ago</span>
+                    </span>
+                    <span class="message">
+                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                    </span>
+                </a>
+            </li>
+            <li>
+                <div class="text-center">
+                    <a>
+                        <strong>See All Alerts</strong>
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </li>-->
+            </ul>
+        </nav>
+    </div>
+</div>

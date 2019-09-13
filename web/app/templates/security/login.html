@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1, shrink-to-fit=no">
+    <title>{{config.get('APP_NAME')}}</title>
+    <link rel="shortcut icon" href="/files/static/img/flavor_icon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/portal/bibliotecas/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/portal/bibliotecas/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/portal/css/sb-admin.css" />
+
+    <style>
+        .hideme
+        {
+            display:none;
+            visibility:hidden;
+        }
+        .showme
+        {
+            display:inline;
+            visibility:visible;
+        }
+    </style>
+
+</head>
+<body class="bg-dark">
+
+    <div class="container">
+        {% if msg %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{msg}}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="card card-login mx-auto mt-5">
+            <div class="card-header">Login</div>
+            <div class="card-body">
+                <form class="form form-signup" role="form" action="" method="post" name="login">
+                    {{form.hidden_tag()}}
+                    {% if not ambiente %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-gear"></span></span>
+                            {{ form.ambiente(size = 80, class = "form-control", placeholder="Informe o ambinte de acesso") }}
+                        </div>
+                    </div>    
+                    {% else %}
+                    <div class="form-group hideme">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-gear"></span></span>
+                            {{ form.ambiente(size = 80, class = "form-control", placeholder="Informe o ambinte de acesso", value=ambiente) }}
+                        </div>
+                    </div>                    
+                    {% endif %}
+                    {% for error in form.errors.openid %}
+                    <span class="help-inline">[{{error}}]</span><br>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                            {{ form.username(size = 80, class = "form-control",placeholder="Digite seu usuário") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                            {{ form.password(size = 80, class = "form-control", placeholder="Digite sua senha") }}
+                        </div>
+                    </div>
+                    {% for error in form.errors.openid %}
+                    <span class="help-inline">[{{error}}]</span><br>
+                    {% endfor %}
+                    {% if not ambiente %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-institution"></span></span>
+                            {{ form.empresa(size = 3, class = "form-control", placeholder="Digite o código da Empresa", value="001") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-institution"></span></span>
+                            {{ form.filial(size = 3, class = "form-control", placeholder="Digite o código da Filial", value="001") }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-sm btn-primary btn-block" role="button">
+                        Entrar
+                    </button>
+                    
+                </form>
+            </div>
+        </div>
+
+        <script src="/files/static/portal/bibliotecas/jquery/jquery.min.js"></script>
+        <script src="/files/static/portal/bibliotecas/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/files/static/portal/bibliotecas/jquery-easing/jquery.easing.min.js"></script>
+        <script src="/files/static/portal/js/sb-admin.min.js"></script>
+</body>
+</html>

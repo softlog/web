@@ -1,0 +1,48 @@
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+    <div style="border: 0;" class="navbar nav_title">
+        <a class="site_title" href="http://www.softlog.eti.br"><i class="fa fa-dashboard"></i> <span>Softlog</span></a>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <br>
+
+    <!-- sidebar menu -->    
+    <div class="main_menu_side hidden-print main_menu" id="sidebar-menu">
+        <div class="menu_section">
+        <h3> Pain&#233;is </h3>
+        <ul class="nav side-menu">
+            {% for menu in m.menu %}
+            <li><a><i class="fa fa-home"></i>{{menu.grupo}}<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    {% for m in menu.sub_item %}
+                    <li><a href="{{request.root_url}}/dashboards/{{m.id_item}}{% if session['data_ref'] %}/{{session["data_ref"]}}{% endif %}">{{m.item}}</a></li>
+                    <!--<li><a href="{{request.args.get('root_url')}}">{{m.item}}</a></li>-->                    
+                    {% endfor %}
+                </ul>
+            </li>            
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
+    <!-- /sidebar menu -->    
+    
+    <!-- /menu footer buttons -->
+    <div class="sidebar-footer hidden-small">
+        <a title="" data-placement="top" data-toggle="tooltip" data-original-title="Settings">
+        <span aria-hidden="true" class="glyphicon glyphicon-cog"></span>
+        </a>
+        <a title="" data-placement="top" data-toggle="tooltip" data-original-title="FullScreen">
+        <span aria-hidden="true" class="glyphicon glyphicon-fullscreen"></span>
+        </a>
+        <a title="" data-placement="top" data-toggle="tooltip" data-original-title="Lock">
+        <span aria-hidden="true" class="glyphicon glyphicon-eye-close"></span>
+        </a>
+        <a title="" data-placement="top" data-toggle="tooltip" data-original-title="Logout">
+        <span aria-hidden="true" class="glyphicon glyphicon-off"></span>
+        </a>
+    </div>
+    <!-- /menu footer buttons -->
+    </div>
+</div>

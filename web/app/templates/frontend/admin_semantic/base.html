@@ -1,0 +1,133 @@
+{% import "frontend/admin_semantic/general/lib.html" as lib %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Sample Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The styles -->
+
+    <link href="/files/static/semantic/css/semantic.min.css" rel="stylesheet">
+    <link href="/files/static/semantic/css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+    <!-- <link href="assets/css/default_colors.css" rel="stylesheet"> -->
+    <link href="/files/static/semantic/css/main.css" rel="stylesheet">
+    <link href="/files/static/semantic/css/main_elements.css" rel="stylesheet">
+    <link href="/files/static/semantic/css/animate.css" rel="stylesheet">
+    <link href="/files/static/semantic/js/morris.js/morris.css" rel="stylesheet">
+    <!-- Data tables -->
+    <link href="/files/static/semantic/js/data_tables/css/footable.core.css" rel="stylesheet" type="text/css" />
+    <link href="/files/static/semantic/js/data_tables/css/footable.metro.css" rel="stylesheet" type="text/css" />
+    <!-- Data tables -->
+    {{lib.set_style("/files/static/select2/select2.css")}}
+
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    {% block head %}
+
+    {% endblock %}
+</head>
+<body>
+
+    <!-- navbar starts -->
+    {% include "frontend/admin_semantic/topmenu.html" %}
+    <!-- navbar ends -->
+    
+    <div id="lunch_sidebar">
+        <i class="reorder circular inverted teal icon lunch_sidebar"></i>
+    </div>
+
+    <!-- left menu starts -->
+    {% include "frontend/admin_semantic/sidebar.html" %}
+    <!-- left menu ends -->
+
+    <noscript>
+        <div class="alert alert-block span1">
+            <h4 class="alert-heading">Warning!</h4>
+            <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+        </div>
+    </noscript>
+
+    <!-- general container start-->
+    <div class="one column stackable ui grid" id="general_container">
+        <!-- content starts -->
+        <div id="content" class="column">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <a data-sumome-discover-grid></a>
+        <!-- general container end-->
+        <!-- Modal HTML -->
+        <div class="ui modal_settings modal">
+            <i class="close icon"></i>
+            <div class="header">
+                Settings
+            </div>
+            <div class="content">
+                <div class="left">
+                    <p>Here settings can be configured...</p>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button">Cancel</div>
+                <div class="ui button">OK</div>
+            </div>
+        </div>
+        <!-- Modal HTML -->
+        <!-- external javascript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- jQuery -->
+        <script src="/files/static/semantic/js/jquery.js"></script>
+
+        <!-- jQuery UI -->
+        <script src="/files/static/semantic/js/jquery-ui-1.8.21.custom.min.js"></script>
+
+        <!-- Semantic UI -->
+        <script src="/files/static/semantic/semantic_ui/javascript/semantic.min.js"></script>
+        <!-- Semantic UI -->
+        <!-- Easypiechart -->
+        <script src="/files/static/semantic/js/jquery.easypiechart.min.js" /></script>
+        <!-- Easypiechart -->
+        <!-- Data tables js -->
+        <script src="/files/static/semantic/js/data_tables/js/footable.js" type="text/javascript"></script>
+        <script src="/files/static/semantic/js/data_tables/js/footable.paginate.js" type="text/javascript"></script>
+        <script src="/files/static/semantic/js/data_tables/js/footable.sort.js" type="text/javascript"></script>
+
+        <!-- morris chars -->
+        <script src="/files/static/semantic/js/morris.js/raphael.js"></script>
+        <script src="/files/static/semantic/js/morris.js/morris.js"></script>
+
+        <!-- Spark lines -->
+        <script src="/files/static/semantic/js/jquery.sparkline.min.js"></script>
+
+        <!-- custom scrollbar -->
+        <script src="/files/static/semantic/js/custom-scrollbar.min.js"></script>
+
+        <script src="/files/static/semantic/js/main_plugin.js"></script>
+        <script src="/files/static/semantic/js/main.js"></script>
+
+        <!-- library for cookie management -->
+        <script src="/files/static/semantic/js/jquery.cookie.js"></script>
+
+        <!-- Gallery plugin -->
+        <script src="/files/static/semantic/js/least/least.min.js"></script>
+        <script src="/files/static/semantic/js/least/jquery.lazyload.min.js"></script>
+
+        <!-- history.js for cross-browser state change on ajax -->
+        <script src="/files/static/semantic/js/jquery.history.js"></script>
+
+
+        {{lib.set_javascript("/files/static/semantic/js/softlog.js")}}
+        {{lib.set_javascript("/files/static/semantic/js/softlog_filters.js")}}
+        {{lib.set_javascript("/files/static/semantic/js/softlog_actions.js")}}
+        {{lib.set_javascript("/files/static/semantic/js/softlog_keep_tab.js")}}
+        {{lib.set_javascript("/files/static/select2/select2.js")}}
+
+        {% block script %}
+
+        {% endblock %}
+</body>
+</html>

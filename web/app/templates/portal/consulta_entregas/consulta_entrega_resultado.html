@@ -1,0 +1,62 @@
+﻿{% extends "frontend/base_onepage.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h2>Informações Gerais da Entrega</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Remetente</th>
+                                <td colspan="4">{{dados.remetente}}</td>
+                            </tr>
+                            <tr>
+                                <th>Destinatário</th>
+                                <td colspan="4">{{dados.destinatario}}</td>
+                            </tr>
+                            <tr>
+                                <th>CNPJ/CPF Destinatário</th>
+                                <td colspan="4">{{dados.cnpj_cpf_destinatario}}</td>
+                            </tr>
+                            <tr>
+                                <th>Data de emissão</th>
+                                <td colspan="4">{{dados.data_emissao}}</td>
+                            </tr>
+                            <tr>
+                                <th>Série Nota Físcal</th>
+                                <td colspan="4">{{dados.serie_nota_fiscal}}</td>
+                            </tr>
+                            <tr>
+                                <th>Número Nota Físcal</th>
+                                <td colspan="4">{{dados.numero_nota_fiscal}}</td>
+                            </tr>
+                            <tr>
+                                <th>Chave NFe</th>
+                                <td colspan="4">{{dados.chave_nfe}}</td>
+                            </tr>
+                            {% if dados.chave_cte %}
+                            <tr>
+                                <th>Chave CTe</th>
+                                <td colspan="4">{{dados.chave_cte}}</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <th>Status</th>
+                                {% if dados.status == 1 %}
+                                <td colspan="4">ENTREGUE</td>
+                                {% else %}
+                                <td colspan="4">NÃO ENTREGUE</td>
+                                {% endif %}
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,281 @@
+﻿{% import 'frontend/general/lib.html' as lib %}
+{% extends 'frontend/base_onepage.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="outerTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#tabc" aria-controls="tabc" role="tab"
+                           aria-expanded="true">Dados Principais</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tabb" aria-controls="tabb" role="tab">
+                            Outros
+                            Parâmetros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#taba" aria-controls="taba" role="tab">
+                            Contatos do
+                            Cliente
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body tab-content mt-2">
+                <div class="tab-pane active" id="tabc" role="tabpanel">
+                    <!-- Início do código Tab 1 - campos  -->
+                    <!-- <hr /> -->
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Tipo Cliente</label>
+                            <select id="selectTipoCliente" class="form-control" placeholder="Escolha o tipo"
+                                    data-allow-clear="1">
+                                <option value="1">Pessoa Jur&#237;dica</option>
+                                <option value="2">Pessoa F&#237;sica</option>
+                                <option value="3">Exporta&#231;&#227;o</option>
+                                <option value="4">Institui&#231;&#227;o sem CNPJ</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputCnpjCpf">CNPJ/CPF</label>
+                            <input type="text" class="form-control" id="inputCnpjCpf" placeholder="CNPJ/CPF"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtNome_cliente">Nome/Raz&#227;o Social</label>
+                            <input type="text" class="form-control" id="txtNome_cliente"
+                                   placeholder="Nome/Raz&#227;o Social" style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtNome_fantasia">Nome Fantasia</label>
+                            <input type="text" class="form-control" id="txtNome_fansatia" placeholder="Nome Fantasia"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtCep">CEP</label>
+                            <input type="text" class="form-control" id="txtCep" placeholder="CEP"
+                                   style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtEndereco">Endere&#231;o</label>
+                            <input type="text" class="form-control" id="txtEndereco" placeholder="Endere&#231;o"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtNumero">N&#250;mero</label>
+                            <input type="text" class="form-control" id="txtNumero" placeholder="N&#250;mero"
+                                   style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtBairro">Bairro</label>
+                            <input type="text" class="form-control" id="txtBairro" placeholder="Bairro"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtCidade">Cidade</label>
+                            <input type="text" class="form-control" id="txtCidade" placeholder="Cidade"
+                                   style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtUF">UF</label>
+                            <input type="text" class="form-control" id="txtUF" placeholder="UF"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtInscricao_estadual">
+                                Inscrição
+                                Estadual
+                            </label>
+                            <input type="text" class="form-control" id="txtInscricao_estadual"
+                                   placeholder="Inscrição Estadual" style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtInscricao_municipal">
+                                Inscrição
+                                Municipal
+                            </label>
+                            <input type="text" class="form-control" id="txtInscricao_municipal"
+                                   placeholder="Inscrição Municipal" style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <!-- Final do código Tab1 - campos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="innerTabPrincipal" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tab1" aria-controls="tab1"
+                                       role="tab" aria-expanded="true">
+                                        Endereços
+                                        do Cliente
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab2" aria-controls="tab2" role="tab">
+                                        Pré
+                                        Alertas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab3" aria-controls="tab3"
+                                       role="tab">Vendedores</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab4" aria-controls="tab4"
+                                       role="tab">Parâmetros de Rota</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="card-body tab-content">
+                            <div class="tab-pane active" id="tab1" role="tabpanel">
+                                Content for Nested Tab-1
+                            </div>
+                            <div class="tab-pane" id="tab2" role="tabpanel">
+                                Content for Nested Tab-2
+                            </div>
+                            <div class="tab-pane" id="tab3" role="tabpanel">
+                                Content for Nested Tab-3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Início da TAB Outros Parâmetros -->
+                <div class="tab-pane" id="tabb" role="tabpanel">
+                    <!-- Início de Conteúdo da TAB Outros Parâmetros -->
+                    <br>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputCnpjCpf">CNPJ/CPF/Responsável</label>
+                            <input type="text" class="form-control" id="inputCnpjCpfResponsavel" placeholder="CNPJ/CPF/Responsável"
+                                   style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtNome_responsavel">Nome/Responsável</label>
+                            <input type="text" class="form-control" id="txtNome_responsavel"
+                                   placeholder="Nome/Responsável" style="text-transform:uppercase">
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtNome_fantasia">Nome Fantasia</label>
+                            <input type="text" class="form-control" id="txtNome_fansatia" placeholder="Nome Fantasia"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtCep">CEP</label>
+                            <input type="text" class="form-control" id="txtCep" placeholder="CEP"
+                                   style="text-transform:uppercase">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtEndereco">Endere&#231;o</label>
+                            <input type="text" class="form-control" id="txtEndereco" placeholder="Endere&#231;o"
+                                   style="text-transform:uppercase">
+                        </div>
+                    </div>
+                    <!-- Colocar aqui o conteúdo -->
+                    <!-- Início das TABs internas-->
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="innerTabOutrosParametros" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tab21" aria-controls="tab21"
+                                       role="tab" aria-expanded="true">Generalidades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab22" aria-controls="tab22" role="tab">Parâmetros Específicos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab23" aria-controls="tab23"
+                                       role="tab">Faturamento</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab24" aria-controls="tab24"
+                                       role="tab">Seguro/Outros</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="card-body tab-content">
+                            <div class="tab-pane active" id="tab21" role="tabpanel">
+                                Content for Nested Tab-2.1 - Generalidades
+
+                            </div>
+                            <div class="tab-pane" id="tab22" role="tabpanel">
+                                Content for Nested Tab-2.2
+                            </div>
+                            <div class="tab-pane" id="tab23" role="tabpanel">
+                                Content for Nested Tab-2.3
+                            </div>
+                            <div class="tab-pane" id="tab24" role="tabpanel">
+                                Content for Nested Tab-2.4
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Fim das Tabs internas-->
+                    <!-- Fim de Conteúdo da TAB Outros Parâmetros -->
+                </div>
+                <!-- Fim da TAB Outros Parâmetros -->
+                <div class="tab-pane" id="taba" role="tabpanel">
+                    Content for Tab-3
+                    <!-- Colocar aqui o conteúdo -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $("#selectTipoCliente").select2().on;            
+        });
+    });
+</script>
+<script type="text/javascript">
+    $("#selectTipoCliente").on("select2-selecting", function (e) {
+        
+        switch (e.val) {
+            case "1":                   
+                $("#inputCnpjCpf").inputmask("99.999.999/9999-99");  //
+                break;
+            case "2":
+                $("#inputCnpjCpf").inputmask("999.999.999-99");  //
+                break;
+            case "3":
+                $("#inputCnpjCpf").inputmask("");  //                
+                break;
+            case "4":
+                $("#inputCnpjCpf").inputmask("");  //                                
+                break;   
+            default:
+                alert('Funciona droga');
+                
+        }
+        //alert(e.val)
+        
+    });     
+</script>
+{% endblock %}

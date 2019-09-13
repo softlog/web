@@ -1,0 +1,73 @@
+﻿{% extends "frontend/base_onepage.html" %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+<!-- Material form register -->
+<div class="row">
+
+    <div class="col col-md-6 col-sm-12 mx-auto" >
+        <!-- Default form register -->
+        <form class="text-center border border-light p-5" method="post" role="form" action="">
+
+            <p class="h4 mb-4">Sign up</p>
+            {{ form.hidden_tag() }}
+            <div class="form-row mb-4">
+                <div class="col">
+                    <!-- First name -->
+                    {{ form.first_name(class = "form-control", placeholder="Informe o Primeiro Nome") }}
+                    <!--<input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">-->
+                    {% for error in form.errors.first_name %}
+                    <small class="help-inline text-danger">{{error}}</small><br>
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    <!-- Last name -->
+                    {{ form.last_name(class = "form-control", placeholder="Informe o Último Nome", id="defaultRegisterFormLastName") }}
+                </div>
+            </div>
+
+            <!-- E-mail -->
+            <div class="form-row">
+                {{form.email(id="defaultRegisterFormEmail", class="form-control mb-4", placeholder="E-mail")}}
+
+            </div>
+
+            <div class="form-row">
+                <!-- Password -->
+                {{form.password(id="defaultRegisterFormPassword", class="form-control", placeholder="Senha")}}
+                {% for error in form.errors.password %}
+                <small class="help-inline text-danger">{{error}}</small><br>
+                {% endfor %}
+            </div>
+
+            <p></p>
+            <!-- Confirm -->
+            <div class="form-row">
+                {{form.confirm(id="defaultRegisterFormConfirm", class="form-control", placeholder="Repita a Senha")}}
+            </div>
+            <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
+                Deve ter 6 caracteres.
+            </small>
+            <!-- Newsletter -->
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="defaultRegisterFormNewsletter">
+                <label class="custom-control-label" for="defaultRegisterFormNewsletter">Subscribe to our newsletter</label>
+            </div>
+
+            <!-- Sign up button -->
+            <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+
+
+            <!-- Terms of service -->
+            <p>
+                By clicking
+                <em>Sign up</em> you agree to our
+                <a href="" target="_blank">terms of service</a>
+
+        </form>
+        <!-- Default form register -->
+    </div>
+</div>
+<!-- Material form register -->
+{% endblock %}

@@ -1,0 +1,77 @@
+{% set menu = appbuilder.menu %}
+
+{% macro menu_item_bs(item) %}
+<li {% if request.endpoint.partition('.')[0]==item.baseview.endpoint %} class="active" {% endif %}>
+    <a href="{{item.get_url()}}">
+        {% if item.icon and False %}
+        <i class="fa fa-fw {{item.icon}}"></i>&nbsp;
+        {% endif %}        {{item.label}}
+    </a>
+</li>
+{% endmacro %}
+
+{% set categoria_ativa = [] %}
+
+{% for i in menu.get_list() %}
+    {% if i.childs %}
+        {% for j in i.childs %}
+            {% if request.endpoint.partition('.')[0] == j.baseview.endpoint %}
+                {% if categoria_ativa.append(i.label) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view" display=none>
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="/" class="site_title"><i class="fa fa-truck"></i> <span>Softlog Web</span></a>
+        </div>
+        <div class="clearfix"></div>
+        <!-- menu profile quick info -->
+        <div class="profile">
+            <div class="profile_pic">
+                <img src="/files/static/images/img.jpg" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>Bem-vindo,</span>
+                <h2>Usuario</h2>
+            </div>
+        </div>
+        <!-- /menu profile quick info -->
+        <br />
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <h3>General</h3>
+                {% for item1 in menu.get_list() %}
+                {% if item1.childs %}
+                <ul class="nav side-menu">
+                    <li>
+                        <a href="javascript:;"
+                           {% if item1.label==categoria_ativa[0] %}
+                           class="active"
+                           {% else %}
+                           class=""
+                           {% endif %}>
+                            {% if item1.icon %}
+                            <i class="fa {{item1.icon}}"></i>&nbsp;
+                            {% endif %}
+                            <span>{{item1.label}}</span><span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            {% for item2 in item1.childs %}
+                            {% if item2.name != '-' %}
+                            {{ menu_item_bs(item2) }}
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

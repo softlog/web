@@ -1,0 +1,30 @@
+﻿{% extends "frontend/base_onepage.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h5 class="text-center">
+            Acessar
+        </h5>
+        <form class="form form-signup" role="form" action="" method="post" name="search_cidades">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-gear"></span></span>
+                    {{ form.nome_banco(size = 80, class = "form-control") }}
+                </div>
+            </div>
+            {% for error in form.errors.openid %}
+            <span class="help-inline">[{{error}}]</span><br>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-sm btn-primary btn-block" role="button">
+                Pesquisar
+            </button>
+        </form>
+        <h1>Lista de Bancos</h1>
+        {% for banco in bancos %}
+        <p>{{banco.nome_banco}}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,318 @@
+from flask import Flask, Response, current_app, g, make_response, render_template
+from flask import _app_ctx_stack
+import psycopg2
+import psycopg2.extensions
+from psycopg2.extras import DictCursor
+from app.builder import AppBuilder, SQLA
+from .builder.idioma import lazy_gettext
+from celery import Celery
+
+
+#from flask.ext.login import current_user
+#from .my_flask_jsondash.charts_builder import charts
+
+from flask_debugtoolbar import DebugToolbarExtension
+import logging 
+
+#Callbacks para jsondash
+def _can_edit_global():
+    return True
+
+def _can_delete():
+    return True
+
+def _can_clone():
+    return True
+
+def _get_username():
+    return 'anonymous'
+
+"""
+ Logging configuration
+"""
+logging.basicConfig(format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
+logging.getLogger().setLevel(logging.DEBUG)
+
+## Login Especifico para Acesso aos Dashboards
+from flask_login import LoginManager
+login_manager_dashboard = LoginManager()
+
+app = Flask('app')
+app.config.from_object('config')
+
+app.debug = True
+#toolbar = DebugToolbarExtension(app)
+
+
+db = SQLA(app)
+appbuilder = AppBuilder(app,db.session)
+
+login_manager_dashboard.init_app(app)
+
+ 
+      
+#DSN_MAIN = 'dbname=softlog user=softlog port=5435 password=paulino host=localhost'
+def create_app(uri):
+    """
+        Factory de App
+    """
+    app = Flask(app)
+    app.config.from_object('config')
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri
+    db = SQLA(app)
+    appbuilder = AppBuilder(app,db.session,static_folder="files/static")
+       
+    from frontend import views
+    
+    return app 
+
+def make_celery(app):
+    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
+                    broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    celery.Task = ContextTask
+    return celery
+     
+celery = make_celery(app)
+
+#Define o Usuario Corrente
+#@app.before_request
+#def before_request():
+#    g.user = current_user         
+
+def get_db(id_db):
+    """
+       Realiza uma conexao com o banco de dados, quando uma 
+       requisição e feita para a aplicacao. A arquitetura utilizada 
+       segue o padrao multi-tenancy. 
+       Parametros: 
+           id_db - O identificador do banco de dados tenancy. 
+       Return: 
+           Um objeto de conexão do tipo psycopg2.connection
+    """  
+    #Conexão ao banco de dados principal da arquitetura multi-tenancy
+    #O objetivo é pegar o DSN do banco de dados tenancy.
+    
+
+    #Verifica se a conexão ao banco tenancy existe
+    db_name = '_database_' + str(id_db)
+    db = getattr(_app_ctx_stack.top,db_name,None)
+    if db is not None:
+        return db 
+
+    #Se não existe conexão principal faz conexão 
+    dbm = getattr(_app_ctx_stack.top,'_database_main',None)        
+    if dbm is None:
+        dbm = psycopg2.connect(app.config.get('DSN_MAIN'))       
+        c = dbm.cursor()
+        c.execute("SET application_name = 'Api Softlog Principal'") 
+        c.close()
+        _app_ctx_stack.top._database_main = dbm
+            
+    #Obtem o dsn do banco destino
+    if str(type(id_db)) == "<class 'str'>":
+        cmd = "SELECT f_get_dsn_tenancy('%s') as dsn " % id_db            
+    else:
+        cmd = "SELECT f_get_dsn_tenancy(%i) as dsn " % id_db
+
+    cursor = dbm.cursor(cursor_factory=DictCursor)
+    cursor.execute(cmd)
+    resultado = cursor.fetchone()
+    cursor.close()
+        
+    id_db_session = getattr(_app_ctx_stack.top,'id_db',None)
+    setattr(_app_ctx_stack.top,'id_db',id_db)
+        
+    #Conexão ao banco de dados tenancy 
+    db = psycopg2.connect(resultado['dsn'])
+    c = db.cursor()
+    c.execute("SET application_name = 'Api Softlog Principal'") 
+    c.close()
+
+    setattr(_app_ctx_stack.top,db_name,db)
+   # print('Conexao estabelecida com ',resultado['dsn'])
+    #print(db.status)
+        
+    return db
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    pass
+    #id_db = getattr(_app_ctx_stack.top,'id_db',None)    
+    #dbm = getattr(_app_ctx_stack.top,'_database_main',None)    
+    #print(dbm.dsn,' fechada')
+    #if dbm is not None: dbm.close()
+        
+    #db_name = '_database_' + str(id_db)
+    #db = getattr(_app_ctx_stack.top,db_name,None)
+    #print(db.dsn, ' fechada')
+    #print('Antes de fechar',db.closed)
+    #if db is not None: db.close()    
+    #print('Depois de fechar',db.closed)
+
+
+def get_uri_db(id_db):
+    """
+       Retorna a URI de um Banco de Dados pelo id_db
+    """     
+
+    #Conexão ao banco de dados principal da arquitetura multi-tenancy
+    #O objetivo é pegar o DSN do banco de dados tenancy.
+    id_db_aux = id_db
+    if id_db_aux not in ["softrans_sb","softlog"]:
+        id_db_aux = "softlog_" + id_db
+
+
+    cmd = "SELECT * FROM string_conexoes WHERE trim(banco_dados) = '%s'" % id_db_aux
+    
+    dbm = psycopg2.connect(app.config.get('DSN_MAIN'))
+    cursor = dbm.cursor(cursor_factory=DictCursor)        
+    cursor.execute(cmd)
+    resultado = cursor.fetchone()
+    cursor.close()
+
+    if resultado is None:
+        return None
+
+    uri = 'postgresql://%s:%s@%s:%s/%s' % (resultado['usuario'],
+                                           resultado['senha'],
+                                           resultado['host'],
+                                           resultado['port'],
+                                           str(resultado['banco_dados'].strip())
+    )
+
+    return  uri
+
+def query_db(id_db, query, args={}, one=False):
+    #Tratando conexao com banco fora do padrão do framework
+    #id_db_aux
+    id_db_aux = id_db
+    if id_db == "softlog_sb":
+        id_db_aux = "softrans_sb"
+
+    if id_db == "softlog_jetlog_teste":
+        id_db_aux == "jetlog_teste"
+
+    if id_db == "softlog_softlog":
+        id_db_aux = "softlog"
+    
+    db = get_db(id_db_aux)
+    cur = db.cursor(cursor_factory=DictCursor)    
+    cur.execute(query, args)
+    rv = cur.fetchall()
+    cur.close()
+    return (rv[0] if rv else None) if one else rv
+
+def query_db_cursor(id_db, reffunc, cursor, args, one=False):
+    db = get_db(id_db)    
+    parametros = [cursor] + args
+    cur = conn.cursor(cursor)
+    cur.callproc(reffunc, parametros)
+
+    cur2 = db.cursor(cursor_factory=DictCursor)
+    return cur2 
+
+def execute_db(id_db, query):
+    db = get_db(id_db)
+    cur = db.cursor()
+    cur.execute(query)
+    cur.close()        
+    return True 
+
+
+
+
+app.jinja_env.globals.update(_=lazy_gettext)
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+@app.route('/websurge-allow.txt')
+def static_from_root():
+    return ''
+
+#Serve imagens do sistema de logistica softlog
+from .api.logistica.documentos import Imagens
+@app.route('/api/softlog/imagem/<int:codigo_acesso>/<imagem>')
+def get_imagem(codigo_acesso,imagem):
+    r = Imagens.getImagem(codigo_acesso,imagem)
+
+    print(codigo_acesso)
+    print(imagem)
+    if r is None:
+        return ''
+    else:       
+
+        from base64 import b64decode
+        
+        r2 = b64decode(r)
+
+        response = make_response(r2)
+        response.headers.set('Content-Type', 'image/jpeg')
+        
+        #response.headers.set(
+        #    'Content-Disposition', filename='%s' % imagem
+        #)
+        
+        return response
+
+@app.route('/api/softlog/resize_imagem/<int:codigo_acesso>/<imagem>')
+def resize_imagem(codigo_acesso,imagem):
+    r = Imagens.getImagem(codigo_acesso,imagem)
+
+    print(codigo_acesso)
+    print(imagem)
+    if r is None:
+        return ''
+    else:       
+
+        from base64 import b64decode
+        
+        r2 = b64decode(r)
+
+        response = make_response(r2)
+        response.headers.set('Content-Type', 'image/jpeg')
+        
+        #response.headers.set(
+        #    'Content-Disposition', filename='%s' % imagem
+        #)
+        
+        return response
+
+
+@app.route('/politica_privacidade')
+def get_politica_privacidade():
+    return render_template("/politica_publicidade.html")
+
+##app.register_blueprint(charts,url_prefix='/v1')
+
+from app.api.integracao_parceiros.views import logistica
+app.register_blueprint(logistica,url_prefix='/api/logistica')
+
+from app.api.logistica.views import softlog
+app.register_blueprint(softlog,url_prefix='/api/softlog')
+
+#Adiciona um blueprint para arquivos staticos
+from app.files import static
+app.register_blueprint(static,url_prefix='/files')
+
+#Adiciona um blueprint para o portal
+from app.frontend.portal import views
+
+#Adiciona um blueprint para o dashboard
+from app.frontend.dashboards_v1 import views
+
+#from app.frontend import views
+from app.frontend.integracao_parceiros import views 
+
+#Importa visões da api_cobranca
+from app.api_cobranca import views
+
+#result = add_together.delay(10,20)
+#result.wait()

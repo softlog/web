@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/files/static/libs/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/files/static/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/files/static/libs/c3/c3.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+
+    <!-- Custom Theme Style -->
+    <link rel="stylesheet" href="/files/static/content/custom.css">
+
+    <script>
+        //Lista para criacao de graficos sparkline
+        var list_sparkline = new Array();
+
+        //Lista para criacao de graficos morris
+        var list_chart_morris = new Array();
+
+        //Lista para criacao de graficos chartJs
+        var list_chartjs = new Array();
+
+        //Lista para criacao de graficos chartJs
+        var list_chartjs_plus = new Array();
+
+        //Lista para criacao de graficos chartJs
+        var list_gaugejs = new Array();
+
+        //Lista para criacao de graficos eCharts
+        var list_echarts = new Array();
+
+        //Lista para criacao de graficos eCharts
+        var list_datatable = new Array();
+    </script>
+
+    {% block head_html %}{% endblock %}
+
+    <title>Dashboard Softlog</title>
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            {% block menu_lateral %}{% include 'dashboards_v1/menu_lateral.html' %}{% endblock %}
+            {% block menu_top %}{% include 'dashboards_v1/menu_top.html' %}{% endblock %}
+            <!-- page content -->
+            <div role="main" class="right_col">
+                {% block content %}{% endblock %}
+            </div>
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <a href="http://www.softlog.eti.br">Softlog Tecnologia</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/files/static/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="/files/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/files/static/libs/fastclick/lib/fastclick.js"></script>
+
+
+    <script src="/files/static/libs/Chart.js/Chart.bundle.min.js"></script>
+    <!--<script src="/files/static/libs/Chart.js/src/Chart.LinearGauge.js"></script>-->
+    <!-- jQuery Sparklines -->
+    <script src="/files/static/libs/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- morris.js -->
+    <script src="/files/static/libs/raphael/raphael-2.1.4.min.js"></script>
+    <script src="/files/static/libs/justgage/justgage.js"></script>
+    <script src="/files/static/libs/morris.js/morris.min.js"></script>
+    <!-- easy-pie-chart -->
+    <script src="/files/static/libs/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+
+    <!-- gauge.js -->
+    <script src="/files/static/libs/bernii/gauge.js/dist/gauge.min.js"></script>
+
+    <!-- Skycons -->
+    <script src="/files/static/libs/skycons/skycons.js"></script>
+    <script src="/files/static/scripts/custom.js"></script>
+    {% block scripts %}{% endblock %}
+    <script>
+        //Renderizacao de Graficos Sparkline
+        $('document').ready(function () {
+            for (var i = 0; i < list_sparkline.length; i++) {
+                x = list_sparkline[i];
+                $("." + x.name).sparkline(x.data, x.options);
+            };
+        });
+    </script>
+
+    <!-- Renderizacao de Graficos ChartJs -->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_chartjs.length; i++) {
+
+                var y = list_chartjs[i];
+                var ctx = $('#' + y.name);
+                var mybarChart = new Chart(ctx, y.chart);
+            };
+        });
+    </script>
+
+    <!-- Renderizacao de Graficos GaugeJs -->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_gaugejs.length; i++) {
+
+                x = list_gaugejs[i];
+                var target = document.getElementById(x.name_class),
+                gauge = new Gauge(target).setOptions(x.opts);
+
+                gauge.maxValue = x.gauge_goal;
+                gauge.animationSpeed = 32;
+                gauge.set(x.gauge_value);
+                gauge.setTextField(x.gauge_text);
+            };
+        });
+    </script>
+
+    <!-- Renderizacao de Data Tables -->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_datatable.length; i++) {
+                z = list_datatable[i];
+                $('#' + z.name).DataTable({
+                    scrollY: '50vh',
+                    scrollCollapse: true,
+                    paging: false,
+                    searching: false,
+                    ordering: false,
+                    "bInfo": false
+                });
+            };
+        });
+    </script>
+
+    <!--Renderizacao do Chart JS Bar Line-->
+    <script>
+        $('document').ready(function () {
+            for (var i = 0; i < list_chartjs_plus.length; i++) {
+
+                var t = list_chartjs_plus[i];
+                var ctx = document.getElementById(t.name).getContext("2d");
+                window.mybarlineChart = new Chart(ctx, t.chart);
+                window.mybarlineChart.update();
+            };
+        });
+    </script>
+</body>
+</html>

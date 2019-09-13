@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+    <META http-equiv="Last-Modified" content="Tue, 17 May 2016 22:58:04 GMT" />
+    <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+    <META http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Softlog Dashboards</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="/files/static/libs/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/files/static/libs/font-awesome/css/font-awesome.min.css">      
+    <!-- grid-stack -->
+    <link href="/files/static/scripts/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/files/static/content/custom_dashboard.css" rel="stylesheet">
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">            
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+            <!-- page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <a href="http://www.softlog.eti.br">Softlog Tecnologia</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/files/static/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/files/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/files/static/libs/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <!--<script src="/files/static/libs/nprogress/nprogress.js"></script>-->
+    <!-- Chart.js -->
+    <script src="/files/static/libs/Chart.js/dist/Chart.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="/files/static/libs/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- morris.js -->
+    <script src="/files/static/libs/raphael/raphael.min.js"></script>
+    <script src="/files/static/libs/morris.js/morris.min.js"></script>
+    <!-- gauge.js -->
+    <script src="/files/static/libs/bernii/gauge.js/dist/gauge.min.js"></script>
+    <!-- Skycons -->
+    <script src="/files/static/libs/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="/files/static/libs/Flot/jquery.flot.js"></script>
+    <script src="/files/static/libs/Flot/jquery.flot.pie.js"></script>
+    <script src="/files/static/libs/Flot/jquery.flot.time.js"></script>
+    <script src="/files/static/libs/Flot/jquery.flot.stack.js"></script>
+    <script src="/files/static/libs/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="/files/static/scripts/flot/jquery.flot.orderBars.js"></script>
+    <script src="/files/static/scripts/flot/date.js"></script>
+    <script src="/files/static/scripts/flot/jquery.flot.spline.js"></script>
+    <script src="/files/static/scripts/flot/curvedLines.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/files/static/scripts/moment/moment.min.js"></script>
+    <script src="/files/static/scripts/datepicker/daterangepicker.js"></script>
+
+    <script src="/files/static/scripts/node_modules/lodash/lodash.min.js"></script>
+    <script src="/files/static/scripts/node_modules/gridstack/src/gridstack.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/files/static/scripts/custom.js"></script>
+
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

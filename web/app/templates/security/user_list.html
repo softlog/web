@@ -1,0 +1,206 @@
+{% extends "frontend/admin/base_admin.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <h5 class="card-header py-2 text-light bg-softlog-dark">Usu&#225;rios</h5>
+            <div class="card-body p-2">
+                <div class="accordion" id="accordionPesquisar">
+                    <div class="card mt-0 h-auto">
+                        <div class="card-header py-0 b-0" id="headingOne">
+                            <h5 class="ml-0 ">
+                                <button class="btn btn-link collapsed py-0 pl-0 text-primary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Pesquisar</button>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionPesquisar">
+                            <div class="card-body px-2">
+                                <form id="filter_form" class="form-search form-control-sm" method="get">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle py-0" data-toggle="dropdown" aria-expanded="false">
+                                            Adicionar Filtro
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="personal_celphone" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Personal Celphone
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="name" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Name
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="gender" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Gender
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="personal_phone" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Personal Phone
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="birthday" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Birthday
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="address" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Address
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="javascript:void(0)" name="contact_group" class="filter btn" onclick="return false;" data-original-title="" title="">
+                                                    Contact Group
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <table class="table table-responsive table-hover filters my-2">
+
+                                        <tbody></tbody>
+                                    </table>
+
+                                    <button type="submit" class="btn  btn-sm btn-primary">
+                                        Search
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-3 p-2 bg-light" >
+                    &nbsp;
+                    <a href="/contactmodelview/add" class="btn btn-sm btn-primary" data-toggle="tooltip" rel="tooltip" title="" data-original-title="Add a new record">
+                        <i class="fa fa-plus"></i>
+                    </a>
+
+                    &nbsp;
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Actions<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+
+
+                            <li>
+                                <a href="javascript:void(0)" onclick="return modelActions.execute_multiple('muldelete','Delete all Really?');" data-original-title="" title="">
+                                    <i class="fa fa-rocket"></i>
+                                    Delete
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    &nbsp;
+                    <a href="/back" class="btn btn-sm btn-default" data-toggle="tooltip" rel="tooltip" title="" data-original-title="Back">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                    <div class="pull-right">
+                        <strong>Record Count:</strong> 7
+                    </div>
+
+                </div>
+                <div class="table-responsive mt-2">
+                    <table width="100%" class="table table-striped dataTable dtr-inline"
+                           id="table_id" role="grid" aria-describedby="dataTables-example_info"
+                           style="width: 100%;">
+                        <thead>
+                            <tr role="row">
+                                <th scope="col">#</th>
+                                <th scope="col">C&#243;digo</th>
+                                <th scope="col">Usu&#225;rio</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Login</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in dados %}
+                            <tr role="row">
+                                <td scope="row">                                
+                                    <center>
+                                        <div class="btn-group btn-group-xs" style="display: flex;">                                            
+                                            <a href="/groupmodelview/edit/25" class="btn btn-sm btn-default" data-toggle="tooltip" rel="tooltip" title="" data-original-title="Edit record">
+                                                <i class="fa fa-edit text-success"></i>
+                                            </a>
+                                            <a data-text="You sure you want to delete this item?" data-href="/groupmodelview/delete/25" class="btn btn-sm btn-default confirm" rel="tooltip" title="" data-toggle="modal" data-target="#modal-confirm" href="#" data-original-title="Delete record">
+                                                <i class="fa fa-eraser text-muted"></i>
+                                            </a>
+                                        </div>
+                                    </center>                                
+                                </td>
+                                <td>{{user.id_usuario}}</td>
+                                <td>{{user.nome_usuario}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.login_name}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                7 Registros
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        var table = $('#table_id').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
+            }
+        });
+
+        $('#table_id tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        table.on('responsive-resize', function (e, datatable, columns) {
+            var count = columns.reduce(function (a, b) {
+                return b === false ? a + 1 : a;
+            }, 0);
+
+            console.log(count + ' column(s) are hidden');
+        });
+    });
+</script>
+
+<script>
+    (function ($) {
+        var filter = new AdminFilters(
+            '#filter_form',
+            { "address": "Address", "birthday": "Birthday", "contact_group": "Contact Group", "gender": "Gender", "name": "Name", "personal_celphone": "Personal Celphone", "personal_phone": "Personal Phone" },
+            { "address": "\u003cinput class=\"form-control\" id=\"address\" name=\"address\" placeholder=\"Address\" type=\"text\" value=\"\"\u003e", "birthday": "\u003cdiv class=\"input-group date appbuilder_date\" id=\"datepicker\"\u003e\u003cspan class=\"input-group-addon\"\u003e\u003ci class=\"fa fa-calendar cursor-hand\"\u003e\u003c/i\u003e\u003c/span\u003e\u003cinput class=\"form-control\" data-format=\"yyyy-MM-dd\" id=\"birthday\" name=\"birthday\" type=\"text\" value=\"\"/\u003e\u003c/div\u003e", "contact_group": "\u003cselect class=\"my_select2 form-control\" data-placeholder=\"Select Value\" id=\"contact_group\" name=\"contact_group\" style=\"width:250px\"\u003e\u003coption value=\"25\"\u003eSports\u003c/option\u003e\u003coption value=\"26\"\u003etest\u003c/option\u003e\u003coption value=\"33\"\u003eHi you\u003c/option\u003e\u003coption value=\"43\"\u003enew record\u003c/option\u003e\u003coption value=\"44\"\u003etest123\u003c/option\u003e\u003coption value=\"50\"\u003eGoldy\u003c/option\u003e\u003coption value=\"51\"\u003eCiao\u003c/option\u003e\u003coption value=\"52\"\u003ezzz\u003c/option\u003e\u003coption value=\"53\"\u003etyr\u003c/option\u003e\u003coption value=\"54\"\u003eCricket\u003c/option\u003e\u003coption value=\"57\"\u003eFoo Bar\u003c/option\u003e\u003coption value=\"58\"\u003ezhaosr\u003c/option\u003e\u003coption value=\"59\"\u003easda\u003c/option\u003e\u003coption value=\"60\"\u003etestggg\u003c/option\u003e\u003coption value=\"61\"\u003eTest\u003c/option\u003e\u003coption value=\"63\"\u003emy-group\u003c/option\u003e\u003coption value=\"64\"\u003eGroup1\u003c/option\u003e\u003coption value=\"65\"\u003eGroup2\u003c/option\u003e\u003coption value=\"66\"\u003eGroup3\u003c/option\u003e\u003coption value=\"67\"\u003eGroup4\u003c/option\u003e\u003coption value=\"68\"\u003eGroup5\u003c/option\u003e\u003coption value=\"69\"\u003eGrupo\u003c/option\u003e\u003coption value=\"70\"\u003efghjk\u003c/option\u003e\u003coption value=\"71\"\u003eTeste DS\u003c/option\u003e\u003coption value=\"72\"\u003efoobar\u003c/option\u003e\u003coption value=\"73\"\u003eCRUD-C\u003c/option\u003e\u003coption value=\"74\"\u003ebungker\u003c/option\u003e\u003coption value=\"75\"\u003eCarlos\u003c/option\u003e\u003coption value=\"76\"\u003eaaaa\u003c/option\u003e\u003coption value=\"78\"\u003eAnil Shrestha\u003c/option\u003e\u003coption value=\"79\"\u003efoo\u003c/option\u003e\u003coption value=\"80\"\u003eMyGroup\u003c/option\u003e\u003coption value=\"81\"\u003e32343234\u003c/option\u003e\u003coption value=\"82\"\u003etest1234567\u003c/option\u003e\u003coption value=\"84\"\u003eHola kioooo\u003c/option\u003e\u003coption value=\"85\"\u003e\u96fb\u8166\u003c/option\u003e\u003coption value=\"86\"\u003eyolodimwashere\u003c/option\u003e\u003coption value=\"87\"\u003eFIFA Game\u003c/option\u003e\u003coption value=\"88\"\u003eJohnDoe\u003c/option\u003e\u003coption value=\"89\"\u003eName\u003c/option\u003e\u003coption value=\"90\"\u003eJames Oliver\u003c/option\u003e\u003coption value=\"91\"\u003ekoos Inc.\u003c/option\u003e\u003coption value=\"92\"\u003ecoontact\u003c/option\u003e\u003coption value=\"93\"\u003eT1\u003c/option\u003e\u003coption value=\"94\"\u003eTesting123\u003c/option\u003e\u003coption value=\"95\"\u003eciao again\u003c/option\u003e\u003coption value=\"96\"\u003etest_cg\u003c/option\u003e\u003coption value=\"97\"\u003eJeff Lo\u003c/option\u003e\u003coption value=\"98\"\u003emoon\u003c/option\u003e\u003coption value=\"99\"\u003eQuestionable Compadres\u003c/option\u003e\u003coption value=\"100\"\u003e555\u003c/option\u003e\u003coption value=\"101\"\u003eBanaba\u003c/option\u003e\u003coption value=\"102\"\u003efs contact group\u003c/option\u003e\u003coption value=\"103\"\u003eewqe\u003c/option\u003e\u003coption value=\"104\"\u003edsfg\u003c/option\u003e\u003coption value=\"105\"\u003eperro loco\u003c/option\u003e\u003coption value=\"106\"\u003eyuiy\u003c/option\u003e\u003coption value=\"107\"\u003etesttt\u003c/option\u003e\u003coption value=\"108\"\u003easdfaf\u003c/option\u003e\u003c/select\u003e", "gender": "\u003cselect class=\"my_select2 form-control\" data-placeholder=\"Select Value\" id=\"gender\" name=\"gender\" style=\"width:250px\"\u003e\u003coption value=\"1\"\u003eMale\u003c/option\u003e\u003coption value=\"2\"\u003eFemale\u003c/option\u003e\u003c/select\u003e", "name": "\u003cinput class=\"form-control\" id=\"name\" name=\"name\" placeholder=\"Name\" type=\"text\" value=\"\"\u003e", "personal_celphone": "\u003cinput class=\"form-control\" id=\"personal_celphone\" name=\"personal_celphone\" placeholder=\"Personal Celphone\" type=\"text\" value=\"\"\u003e", "personal_phone": "\u003cinput class=\"form-control\" id=\"personal_phone\" name=\"personal_phone\" placeholder=\"Personal Phone\" type=\"text\" value=\"\"\u003e" },
+            { "address": ["Starts with", "Ends with", "Contains", "Equal to", "Not Starts with", "Not Ends with", "Not Contains", "Not Equal to"], "birthday": ["Equal to", "Greater than", "Smaller than", "Not Equal to"], "contact_group": ["Relation", "No Relation"], "gender": ["Relation", "No Relation"], "name": ["Starts with", "Ends with", "Contains", "Equal to", "Not Starts with", "Not Ends with", "Not Contains", "Not Equal to"], "personal_celphone": ["Starts with", "Ends with", "Contains", "Equal to", "Not Starts with", "Not Ends with", "Not Contains", "Not Equal to"], "personal_phone": ["Starts with", "Ends with", "Contains", "Equal to", "Not Starts with", "Not Ends with", "Not Contains", "Not Equal to"] },            
+            []
+        );
+    })(jQuery);
+
+</script>
+
+{% endblock %}

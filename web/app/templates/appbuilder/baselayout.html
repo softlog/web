@@ -1,0 +1,33 @@
+{% extends 'appbuilder/init.html' %}
+{% import 'appbuilder/baselib.html' as baselib %}
+{% block body %}
+    {% block navbar %}
+        {% include 'appbuilder/navbar_right.html' %}
+        {% include 'appbuilder/navbar_top.html' %}        
+        {% include 'appbuilder/general/confirm.html' %}
+        {% include 'appbuilder/general/alert.html' %}   
+    {% endblock %}
+    <!-- page content -->
+    <div class="right_col" role="main">        
+            {% block messages %}
+                {% include 'appbuilder/flash.html' %}
+            {% endblock %}
+                    
+            {% block content %}
+            {% endblock %}
+    </div>
+    <!-- page content -->
+    <!-- footer content -->
+
+    {% block add_tail_js %}
+
+    {% endblock %}
+
+    <footer>
+        <div class="pull-right">
+            <a href="http://www.softlog.eti.br">Softlog Tecnologia</a>
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+    <!-- /footer content -->
+{% endblock %}

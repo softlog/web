@@ -1,0 +1,110 @@
+﻿{% extends "frontend/base_onepage.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" id="outerTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#tabc" aria-controls="tabc" role="tab" aria-expanded="true">Tab-1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tabb" aria-controls="tabb" role="tab">Tab-2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#taba" aria-controls="taba" role="tab">Tab-3</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body tab-content">
+        <div class="tab-pane active" id="tabc" role="tabpanel">
+            Content for Tab-1 and:
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="innerTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab1" aria-controls="tab1" role="tab" aria-expanded="true">Nested Tab-1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab2" aria-controls="tab2" role="tab">Nested Tab-2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab3" aria-controls="tab3" role="tab">Nested Tab-2</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body tab-content">
+                    <div class="tab-pane active" id="tab1" role="tabpanel">
+                        Content for Nested Tab-1
+                    </div>
+                    <div class="tab-pane" id="tab2" role="tabpanel">
+                        Content for Nested Tab-2
+                    </div>
+                    <div class="tab-pane" id="tab3" role="tabpanel">
+                        Content for Nested Tab-3
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tabb" role="tabpanel">
+            Content for Tab-2
+        </div>
+        <div class="tab-pane" id="taba" role="tabpanel">
+            Content for Tab-3
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <div class="ui cards">
+            <div class="card">
+                <div class="content">
+                    <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg">
+                    <div class="header">
+                        Elliot Fu
+                    </div>
+                    <div class="meta">
+                        Friends of Veronika
+                    </div>
+                    <div class="description">
+                        Elliot requested permission to view your contact details
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <div class="ui basic green button">Approve</div>
+                        <div class="ui basic red button">Decline</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="content">
+                    <img class="right floated mini ui image" src="/images/avatar/large/jenny.jpg">
+                    <div class="header">
+                        Jenny Hess
+                    </div>
+                    <div class="meta">
+                        New Member
+                    </div>
+                    <div class="description">
+                        Jenny wants to add you to the group <b>best friends</b>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <div class="ui basic green button">Approve</div>
+                        <div class="ui basic red button">Decline</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <button class="ui button">Follow</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

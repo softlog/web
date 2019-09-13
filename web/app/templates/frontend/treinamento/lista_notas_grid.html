@@ -1,0 +1,74 @@
+﻿{% extends "frontend/base_onepage.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+
+        <h5 class="text-center">
+            Listagem de Notas
+        </h5>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table width="100%" class="table table-striped dataTable dtr-inline"
+                       id="table_id" role="grid" aria-describedby="dataTables-example_info"
+                       style="width: 100%;">
+                    <thead>
+                        <tr role="row">
+                            <th scope="col">#</th>
+                            <th scope="col">Chave</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Remetente</th>
+                            <th scope="col">Destinat&#225;rio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nota in notas %}
+                        <tr role="row">
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{nota.chave_nfe}}</td>
+                            <td>{{nota.data_emissao}}</td>
+                            <td>{{nota.remetente_nome}}</td>
+                            <td>{{nota.destinatario_nome}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        var table = $('#table_id').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
+            }
+        });
+
+        $('#table_id tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        table.on('responsive-resize', function (e, datatable, columns) {
+            var count = columns.reduce(function (a, b) {
+                return b === false ? a + 1 : a;
+            }, 0);
+
+            console.log(count + ' column(s) are hidden');
+        });
+    });
+</script>
+{% endblock %}

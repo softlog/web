@@ -1,0 +1,10 @@
+{
+  "cnpj_transportador": "CNPJ",
+  "id_nota_fiscal": 0,
+  "id_ocorrencia": 1,
+  "canhoto": 1,
+  "entrega_realizada": 1,
+  "data_ocorrencia": "2016-10-26 18:00",
+  "nome_recebedor": "FULANO",
+  "cpf_recebedor": "98998998999"
+}

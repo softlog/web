@@ -1,0 +1,153 @@
+﻿<html>
+<head>
+    <META http-equiv="X-UA-Compatible" content="IE=edge" />
+    <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+    <META http-equiv="Last-Modified" content="Tue, 17 May 2016 22:58:04 GMT" />
+    <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+    <META http-equiv="Pragma" content="no-cache" />
+    <META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <META name="description" content="" />
+    <META name="author" content="" />
+    <META name="viewport" content="width=device-width, initial-scale=1">
+    <title>Integração de Parceiros</title>
+    <style>
+        .progress {
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.1/nanobar.min.js"></script>
+
+    <link href="{{url_for('static.static',filename='libs/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static.static',filename='scripts/node_modules/gridstack/dist/gridstack.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static.static',filename='datepicker/bootstrap-datepicker.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static.static',filename='select2/select2.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static.static',filename='css/flags/flags16.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static.static',filename='css/ab.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static.static',filename='content/custom.css')}}" rel="stylesheet" />
+    <script src="{{url_for('static.static',filename='libs/jquery/dist/jquery.min.js')}}"></script>
+</head>
+
+<body class="nav-md">
+    <div class="container body" style="padding: 8px; border-width: 1px;">
+        <div class="main_container" >
+            <div class="row" >
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title"><h4>Importação de Documentos Fiscais de Parceiros</h4></div>
+                        <div class="x_content">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <th>Transportador</th>
+                                        <th>Qtd.</th>
+                                        <th>Ação</th>
+                                        <th>Status</th>                                        
+                                    </thead>
+                                    {% for doc in docs['documentos_disponiveis'] %}
+                                    <tr>
+                                        <td>{{doc.razao_social}}</td>
+                                        <td>{{doc.qt_docs}}</td>
+                                        {% if doc.qt_docs > 0 %}
+                                            <td><input id="importar_{{doc.id_bd}}" type="submit" name="importar" value="Importar" /></td>
+                                            <td width="30%"><div id="progress_{{doc.id_bd}}"></div></td>
+                                        {% else %}
+                                            <td></td>
+                                            <td width="30%"></td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<button onclick="start_long_task();">Start Long Calculation</button><br><br>-->
+    <script>
+        function start_importacao_docs(event) {
+        
+            // add task status elements              
+            div = $('<div class="progress_' + event.data.id + '"><div></div><div>0%</div><div>...</div><div>&nbsp;</div></div>');
+
+
+            $('#progress_' + event.data.id).append(div);            
+            $('#importar_' + event.data.id).prop( "disabled", true );
+            // create a progress bar
+            var nanobar = new Nanobar({
+                bg: '#44f',
+                target: div[0].childNodes[0]
+            });
+            // send ajax POST request to start background job
+            $.ajax({
+                type: 'POST',
+                url: '/integracao_softlog/importa_docs',
+                data: {
+                    'id_bd':event.data.id,
+                    'lst_notas':event.data.lst_notas,
+                    'lst_clientes':event.data.lst_clientes,
+                    'id_db_main':event.data.id_db_main,
+                    'acesso':event.data.acesso,
+                    'tp_romaneio':event.data.tp_romaneio 
+                },
+                success: function (data, status, request) {
+                    status_url = request.getResponseHeader('Location');
+                    update_progress(status_url, nanobar, div[0]);
+                },
+                error: function () {
+                    alert('Unexpected error');
+                }
+            });
+        }
+        function update_progress(status_url, nanobar, status_div) {
+            // send GET request to status URL 
+            if (status_url == null) {
+                $(status_div.childNodes[3]).text('Ocorreu um erro. Sistema indisponível');
+            } else {
+                $.getJSON(status_url, function (data) {
+                    // update UI
+                    percent = parseInt(data['current'] * 100 / data['total']);
+                    nanobar.go(percent);
+                    $(status_div.childNodes[1]).text(percent + '% ');
+                    $(status_div.childNodes[2]).text(data['status']);
+                    if (data['state'] != 'PENDENTE' && data['state'] != 'EXECUTANDO') {
+                        if ('result' in data) {
+                            // show result
+                            $(status_div.childNodes[3]).text('Result: ' + data['result']);
+                        }
+                        else {
+                            // something unexpected happened
+                            $(status_div.childNodes[3]).text('Result: ' + data['state']);
+                        }
+                    }
+                    else {
+                        // rerun in 2 seconds
+                        setTimeout(function () {
+                            update_progress(status_url, nanobar, status_div);
+                        }, 2000);
+                    }
+                });
+            }
+        }
+        //Associa o click de cada botao importar das linhas da tabela 
+        // e passa como parametro o id do banco de dados.
+        {% for doc in docs['documentos_disponiveis'] %}
+            $(function () {
+                $('#importar_{{doc.id_bd}}').on("click",{ 
+                    id:{{doc.id_bd}}, 
+                    lst_notas: '{{doc.lst_notas}}',
+                    lst_clientes:'{{doc.lst_clientes}}', 
+                    id_db_main:{{doc.id_db_main}},
+                    acesso:'{{doc.acesso}}',
+                    tp_romaneio:'{{doc.tp_romaneio}}'
+                },start_importacao_docs);                
+            });
+        {% endfor %}
+    </script>
+</body>
+</html>

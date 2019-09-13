@@ -1,0 +1,70 @@
+﻿{% import 'frontend/general/lib.html' as lib %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{config.get('APP_NAME')}}</title>
+    <link rel="shortcut icon" href="/files/static/img/flavor_icon.ico" type="image/vnd.microsoft.icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/portal/bibliotecas/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/portal/bibliotecas/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/portal/css/sb-admin.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/libs/datepicker/bootstrap-datepicker.css" />
+    
+    {{lib.set_style("//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css")}}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+    <!-- DataTables Responsive CSS -->
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" />
+
+
+    {{lib.set_style("/files/static/libs/select2/select2.css")}}
+    {{lib.set_style("/files/static/libs/select2/select2-bootstrap4.min.css")}}
+    {{lib.set_style("/files/static/portal/css/ab.css")}}
+
+    <script src="/files/static/portal/bibliotecas/jquery/jquery.min.js"></script>
+    <script src="/files/static/portal/bibliotecas/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/files/static/libs/jquery-easing/jquery.easing.min.js"></script>
+    
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>     
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script> 
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/files/static/libs/datepicker/bootstrap-datepicker.js" />    
+
+    {{lib.set_javascript("/files/static/js/ab.js")}}
+    {{lib.set_javascript("/files/static/js/ab_filters.js")}}
+    {{lib.set_javascript("/files/static/js/ab_actions.js")}}
+    {{lib.set_javascript("/files/static/js/ab_keep_tab.js")}}
+    {{lib.set_javascript("/files/static/libs/select2/select2.js")}}
+    <script src="/files/static/portal/js/sb-admin.min.js"></script>
+    {{lib.set_javascript("/files/static/js/jquery.inputmask.js")}}
+
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="margin-bottom:60px">
+            <div class="col-12">
+                {% include "frontend/menu_top_onepage.html" %}
+            </div>
+        </div>
+        {% block messages %}
+             {% include 'appbuilder/flash.html' %}
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+    </div>
+            {% block scripts %}
+
+            {% endblock %}
+</body>
+
+</html>

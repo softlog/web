@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
     Some py2/py3 compatibility support based on a stripped down

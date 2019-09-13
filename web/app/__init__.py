@@ -13,9 +13,7 @@ from app.baseapp import AppBuilder
 from app.models.gerais import Filial  
 
 from flask_httpauth import HTTPBasicAuth
-
 from .idioma import lazy_gettext
-
 from celery import Celery
 
 import pkg_resources

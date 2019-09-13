@@ -5,12 +5,13 @@ from app.filters import TemplateFilters
 from app.sqla.interface import SQLAInterface
 from app.security.sqla.models import StringConexoes
 from flask import session, Blueprint, url_for
-
 from app.models.gerais import Filial
 
-
 class AppBuilder(object):
-
+"""
+    Classe principal do Builder de Aplicação. Responsável por 
+    registrar as views, inicializar base de permissões.
+"""
     baseviews = []
     security_manager_class = None
     # Flask app

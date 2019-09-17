@@ -8,10 +8,10 @@ from flask import session, Blueprint, url_for
 from app.models.gerais import Filial
 
 class AppBuilder(object):
-"""
-    Classe principal do Builder de Aplicação. Responsável por 
-    registrar as views, inicializar base de permissões.
-"""
+    """
+        Classe principal do Builder de Aplicação. Responsável por 
+        registrar as views, inicializar base de permissões.
+    """
     baseviews = []
     security_manager_class = None
     # Flask app

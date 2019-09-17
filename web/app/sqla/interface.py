@@ -116,46 +116,6 @@ class SQLAInterface(BaseInterface):
 
         return len(query.all()), query.all()
 
-    def query_init(self, filters=None, order_column='', order_direction='',
-              page=None, page_size=None):
-        """
-            QUERY
-            :param filters:
-                dict with filters {<col_name>:<value,...}
-            :param order_column:
-                name of the column to order
-            :param order_direction:
-                the direction to order <'asc'|'desc'>
-            :param page:
-                the current page
-            :param page_size:
-                the current page size
-        """
-        
-        query = self.session.query(self.obj).filter_by(id=-1)
-        
-        if len(order_column.split('.')) >= 2:
-            tmp_order_column = ''
-            for join_relation in order_column.split('.')[:-1]:
-                model_relation = self.get_related_model(join_relation)
-                query = query.join(model_relation)
-                # redefine order column name, because relationship can have a different name
-                # from the related table name.
-                tmp_order_column = tmp_order_column + model_relation.__tablename__ + '.'
-            order_column = tmp_order_column + order_column.split('.')[-1]
-
-        query = self._get_base_query(query=query,
-                                     filters=filters,
-                                     order_column=order_column,
-                                     order_direction=order_direction)
-
-        count = 0
-
-        
-        if page_size:
-            query = query.limit(0)
-
-        return count, query.all()
 
     def query_simple_group(self, group_by='', aggregate_func = None, aggregate_col = None, filters=None):
         query = self.session.query(self.obj)

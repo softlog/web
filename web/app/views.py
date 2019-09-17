@@ -750,7 +750,8 @@ class ModelSoftlogView(RestCRUDView):
         count_args = len(request.args)
         
         if self.start_empty and count_args == 0:
-            count, lst = self.datamodel.query_init(joined_filters, order_column, order_direction, page=page, page_size=0)
+            count = 0
+            lst = []
         else:
             count, lst = self.datamodel.query(joined_filters, order_column, order_direction, page=page, page_size=0)
         

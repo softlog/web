@@ -24,7 +24,7 @@ class Filial(ModelSoftlogView):
 
     show_columns = edit_columns = add_columns
     
-    start_empty = False
+    #start_empty = False
 
 
 

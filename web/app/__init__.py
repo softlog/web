@@ -463,6 +463,8 @@ from app.frontend.portal_consulta import views
 
 from app.frontend.cadastros import views_cadastros
 
+from app.frontend.treinamento import base_views
+
 #Importa visoes base
 from app.base import index_view
 from app.base import main_view

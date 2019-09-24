@@ -35,11 +35,13 @@
                             <a href="/dashboards/reload_filiais/{{session.get('codigo_empresa_dashboard')}}/todos/{{id_dashboard}}">Todas Filiais</a>
                             {% endif %}
                         </li>
+                        {% if m.filiais %}
                         {% for filial in m.filiais %}
                         <li>
                             <a href="/dashboards/reload_filiais/{{filial.codigo_empresa}}/{{filial.codigo_filial}}/{{id_dashboard}}">{{filial.codigo_empresa}}-{{filial.codigo_filial}}-{{filial.nome_descritivo}}</a>
                         </li>
                         {% endfor %}
+                        {% endif %}
                     </ul>
                 </li>
                 <li class="">
@@ -55,11 +57,13 @@
                         <li>
                             <a href="/dashboards/reload_empresas/todos/{{id_dashboard}}">Todas Empresas</a>
                         </li>
+                        {% if m.empresas %}
                         {% for empresa in m.empresas %}
                         <li>
                             <a href="/dashboards/reload_empresas/{{empresa.codigo_empresa}}/{{id_dashboard}}">{{empresa.codigo_empresa}}-{{empresa.nome_fantasia}}</a>
                         </li>
                         {% endfor %}
+                        {% endif %}
                     </ul>
                 </li>
 

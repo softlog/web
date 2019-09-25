@@ -28,13 +28,20 @@ class Manager(BaseManager):
         self.menu = None        
 
         
-        try:
-            #self.id_db = 'softlog_' + g.user.id.split(':')[1]
+        #try:
+        #self.id_db = 'softlog_' + g.user.id.split(':')[1]
+        if session.get('ambiente') not in ['softrans_sb', 'softlog']:
             self.id_db = 'softlog_' + session.get('ambiente')
+        else:
+            self.id_db = session.get('ambiente')
+       
+        try:
             self.user = user
             self.load_empresas(session.get('ambiente'))
             self.load_filiais(session.get('ambiente'))
+            
             self.load_menu_dashboard()
+        
         except Exception as e:
             print(traceback.format_exc())
             pass
@@ -96,7 +103,7 @@ class Manager(BaseManager):
                         SELECT f_dashboard_view(%i, NULL,NULL,%s) as dados
                 """ % (id_dash,p_var_aux)
 
-        print(cmd)
+        
 
         r = query_db(self.id_db, cmd, None, True)
                 
@@ -180,13 +187,20 @@ class Manager(BaseManager):
     def load_empresa(self,empresa,ambient):
         
         cmd = "SELECT * FROM empresa WHERE codigo_empresa = '%s'" % (empresa)
-        r   = query_db('softlog_' + ambient, cmd, None, True)
+        if ambient not in ['softrans_sb','softlog']:
+            r   = query_db('softlog_' + ambient, cmd, None, True)
+        else:
+            r   = query_db(ambient, cmd, None, True)
         self.reg_empresa = r
         return r
 
     def load_filial(self,empresa,filial,ambient):                
         cmd = "SELECT * FROM filial WHERE codigo_empresa = '%s' AND codigo_filial = '%s'" % (empresa, filial)
-        r   = query_db('softlog_' + ambient, cmd, None, True)
+        if ambient not in ['softrans_sb','softlog']:
+            r   = query_db('softlog_' + ambient, cmd, None, True)
+        else:
+            r   = query_db(ambient, cmd, None, True)
+
         self.reg_filial = r
         return r
         
@@ -202,7 +216,12 @@ class Manager(BaseManager):
             cmd = "SELECT * FROM filial ORDER BY codigo_empresa, codigo_filial"
         else:
             cmd = "SELECT * FROM filial WHERE codigo_empresa = '%s' ORDER BY codigo_empresa, codigo_filial" % self.empresa
-        r   = query_db('softlog_' +ambient,cmd,None,False)
+
+        if ambient not in ['softrans_sb','softlog']:
+            r   = query_db('softlog_' +ambient,cmd,None,False)
+        else:
+            r   = query_db(ambient,cmd,None,False)
+
         self.filiais = r
         return r
             

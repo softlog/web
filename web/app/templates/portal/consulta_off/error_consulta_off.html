@@ -1,0 +1,25 @@
+﻿{% extends "frontend/base_onepage.html" %}
+{% block content %}
+
+
+<body>
+
+	<div id="notfound">
+        <div class="notfound">
+            <div class="notfound-404">
+                <div></div>
+                <h1>ERROR 404 - page not found</h1>
+            </div>
+            <h4>O banco "{{banco}}" não existe, altere a URL e tente novamente! </h4>
+            
+            <form action="http://api.softlog.eti.br">
+                <button type="submit" id="button" class="btn btn-sm btn-primary" role="button">
+                    Home page
+                </button>
+           </form>
+        </div>
+	</div>
+
+</body>
+
+{% endblock %}

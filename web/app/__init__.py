@@ -460,6 +460,7 @@ from app.security import views
 
 #View do portal de consulta
 from app.frontend.portal_consulta import views
+from app.frontend.consulta_off import views
 
 from app.frontend.cadastros import views_cadastros
 

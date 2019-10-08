@@ -23,7 +23,8 @@ class FormConsultaEntrega(DynamicForm):
     consulta_cte = StringField("Consulta CTe", validators=[DataRequired()])
     consulta_nfe = StringField("Consulta NFe", validators=[DataRequired()])
     consulta_nota = StringField("Consulta Nota", validators=[DataRequired()])
-    consulta_destinatario = StringField("Consulta Destinatario", validators=[DataRequired()])
+    consulta_destinatario = StringField("Consulta Nome Destinatario", validators=[DataRequired()])
+    consulta_destinatario_cpf_cnpj = StringField("Consulta CPF/CNPJ Destinatario", validators=[DataRequired()])
     data1 = StringField("Data Inicio")
     data2 = StringField("Data Fim")
 

@@ -34,7 +34,12 @@ class Rastreamento(object):
 		        d.nome_cliente as destinatario_nome,
 		        trim(c.nome_cidade) || '-' || (c.uf) as destino,
                 img.url_imagem,
-                trim(filial.razao_social) as transportadora
+                trim(filial.razao_social) as transportadora,
+                trim(filial.url_site) as url_site,
+                trim(filial.url_contato) as url_contato,
+                trim(filial.dados_contato) as dados_contato,
+                trim(filial.url_facebook) as url_facebook,
+                trim(filial.url_linkedin) as url_linkedin
 	        FROM
 		        scr_notas_fiscais_imp nf
 		        LEFT JOIN cliente r
@@ -61,6 +66,11 @@ class Rastreamento(object):
 		        destino,
                 url_imagem as imagem,
                 transportadora,
+                url_site,
+                url_contato,
+                dados_contato,
+                url_facebook,
+                url_linkedin,
 		        situacao.situacoes as situacoes
 	        FROM 
 		        geral,
@@ -146,7 +156,12 @@ class Rastreamento(object):
 			ELSE 
 				'A CONFIRMAR'
 			END as destino,
-            trim(filial.razao_social) as transportadora
+            trim(filial.razao_social) as transportadora,
+            trim(filial.url_site) as url_site,
+            trim(filial.url_contato) as url_contato,
+            trim(filial.dados_contato) as dados_contato,
+            trim(filial.url_facebook) as url_facebook,
+            trim(filial.url_linkedin) as url_linkedin
 		FROM
 			scr_nfe_rastreamentos rast
 			LEFT JOIN v_mgr_notas_fiscais nf
@@ -174,7 +189,12 @@ class Rastreamento(object):
 		        destino,
 		        situacao.situacoes as situacoes,
                 situacao.imagem,
-                transportadora
+                transportadora,
+                url_site,
+                url_contato,
+                dados_contato,
+                url_facebook,
+                url_linkedin
 	        FROM 
 		        geral,
 		        situacao

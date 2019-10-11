@@ -25,7 +25,7 @@
                             </tr>
                             <tr>
                                 <th>Transportadora</th>
-                                <td colspan="4">{{dados.transportadora}}</td>
+                                <td colspan="4"><a href="{{dados.url_site}}">{{dados.transportadora}}</a></td>
                             </tr>
                             <tr>
                                 <th>Remetente</th>
@@ -108,5 +108,9 @@
             }
         });
     });
+    {% if dados.url_contato %}
+    $("#link_contato").attr("href", "{{dados.url_contato}}");
+    {% endif %}
+    
 </script>
 {% endblock %}

@@ -3,13 +3,13 @@ from app.security.forms import FormConsultaEntrega
 from flask import render_template, request, session, redirect, url_for, abort
 from app import app
 from sqlalchemy import create_engine
-
+from app import get_uri_db
  
 @app.route('/portal/webtracking/off/<ambiente>', methods=['GET', 'POST'])
 def index_portal_consulta_off(ambiente):
 
     try:
-        engine = create_engine('postgresql://softlog_{}:paulino@pg.softlog.eti.br:5432/softlog_{}'.format(ambiente, ambiente))
+        engine = create_engine(get_uri_db(ambiente))
         conn = engine.connect()
     except :
        return render_template('portal/consulta_off/error_consulta_off.html', banco = ambiente), 404

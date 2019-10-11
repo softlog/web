@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from flask import render_template
 from flask_login import current_user
+from app import get_uri_db
 
 
 class Filter:
@@ -27,9 +28,7 @@ class Filter:
     def connect(self, dados, ambiente):
         
         amb = ambiente
-         
-        #create_engine(dialect://username:password@host:port/database)
-        engine = create_engine('postgresql://softlog_{}:paulino@pg.softlog.eti.br:5432/softlog_{}'.format(amb, amb))
+        engine = create_engine(get_uri_db(amb))
         conn = engine.connect()
         result_proxy = conn.execute(dados)
         results = result_proxy.fetchall()

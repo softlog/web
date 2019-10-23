@@ -1,38 +1,42 @@
-#Classes utilitarias do Flask
-from flask import g, request, render_template, session, flash, redirect, \
-    url_for, jsonify, request, abort, Response, session
-
-#Classes utilitárias do Framework
-from app import app
+##Classes para implementação de Views
+from app.baseviews import expose, BaseView
+from app.views import ModelSoftlogView
+from app.security.decorators import has_access, permission_name, has_access_api
 from app import appbuilder
-
-
-#Classes para manipular Modelo de Dados
-from app import db
 from app.sqla.interface import SQLAInterface
-from app.sqla.models.filters import BaseFilterConverter
-from app.sqla.models.filters import Filters
-from app.sqla.filters import *
-from app import query_db_2, execute_db
-import json
 
-@app.route('/cadastros/cliente/list/', methods=['GET', 'POST'])
-def cliente_list():
-    return "lista de clientes"
+## Modelos de Dados
+from app.models.gerais import Filial, BancosModel
 
-@app.route('/cadastros/cliente/add/<int:id>', methods=['GET', 'POST'])
-def cliente_add(id):
-    return render_template("frontend/cadastros/cliente_add.html")
+##View Cadastro Banco
+class Bancos(ModelSoftlogView):
 
-@app.route('/cadastros/cliente/edit/<int:id>', methods=['GET', 'POST'])
-def cliente_edit(id):
-    return "edição de clientes"
+    datamodel = SQLAInterface(BancosModel)
+    start_empty = False
 
-@app.route('/cadastros/cliente/delete/<int:id>', methods=['GET', 'POST'])
-def cliente_delete(id):
-    return "exclusão de clientes"
+    #Colunas que vão aparecer na listagem
+    list_columns = ['nome_banco','numero_banco']
 
-@app.route('/cadastros/cliente/show/<int:id>', methods=['GET', 'POST'])
-def cliente_show(id):
-    return "visualizacao de clientes"
+    #Colunas que vão aparecer nas telas de Inserção, Edição e Visualização
+    add_columns = ['nome_banco','numero_banco']
+    edit_columns = show_columns = add_columns 
 
+    #Títulos das colunas (Captions)
+    label_columns = {'nome_banco':'Banco'}
+
+    #Determina o Order By (Está em conflito com a classe do datagrid js)
+    order_columns = ['nome_banco']
+
+    #Colunas disponíveis para filtros na listagem
+    search_columns = ['nome_banco','numero_banco']
+
+    search_columns
+
+
+
+
+
+
+
+appbuilder.add_view(Bancos, "Bancos", icon="fa-group", label='Bancos',
+                     category="Cadastros", category_icon="fa-cogs")

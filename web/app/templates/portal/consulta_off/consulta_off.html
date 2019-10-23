@@ -9,10 +9,10 @@
                 <label for="inputState">Pesquisar por:</label>
                 <select name="modo_pesquisa" id="modo_pesquisa" class="form-control">
                     <option value="1">Selecione</option>
-                    <option value="destinatario_nnota">CPF/CNPJ Destintário com Número Nota Fiscal</option>
+                    <option value="destinatario_nnota">Número Nota Fiscal com CPF/CNPJ Destintário</option>
                     <option value="destinatario_nome">Nome Destintário</option>
                     <option value="destinatario_cpf_cnpj">CPF/CNPJ Destintário</option>
-                    <option value="numero_nota">Número Nota Fiscal</option>
+                    <option value="nmr_pedido">Número Pedido</option>
                 </select>
             </div>
 
@@ -62,6 +62,9 @@
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example"
                                             rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending"
                                             style="width: 60px;">Número Nota Fiscal</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example"
+                                            rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                            style="width: 60px;">Número Pedido</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,6 +76,11 @@
                                         <td><a href="/portal/rastreamento/consulta/{{c.codigo_rastreamento}}">{{c.data_emissao}}</a></td>
                                         <td><a href="/portal/rastreamento/consulta/{{c.codigo_rastreamento}}">{{c.ocorrencia}}</a></td>
                                         <td><a href="/portal/rastreamento/consulta/{{c.codigo_rastreamento}}">{{c.numero_nota_fiscal}}</a></td>
+                                        {% if c.numero_pedido_nf %}
+                                        <td><a href="/portal/rastreamento/consulta/{{c.codigo_rastreamento}}">{{c.numero_pedido_nf}}</a></td>
+                                        {% else %}
+                                        <td><a href="/portal/rastreamento/consulta/{{c.codigo_rastreamento}}">PEDIDO SEM NÚMERO</a></td>
+                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -88,8 +96,12 @@
 </div>
     {% endif %}
 
-
 <script type="text/javascript">
+
+    {% if url_contato %}
+    $("#link_contato").attr("href", "{{url_contato}}");
+    {% endif %}
+
     $(document).ready(function () {
         $('#dataTables-example').DataTable({
             responsive: true,
@@ -107,16 +119,7 @@
             // obtendo o valor do atributo value da tag option
             opcao = $("#modo_pesquisa option:selected").val();
 
-            if (opcao == "numero_nota") {
-
-                var input = (' <div class="input-group">\
-                                 {{ form.consulta_nota(size = 20, class = "form-control", placeholder = "NUMERO NOTA FISCAL") }}\
-                            </div > ');
-
-                document.getElementById('input').innerHTML = input;
-
-
-            } else if (opcao == "destinatario_cpf_cnpj") {
+            if (opcao == "destinatario_cpf_cnpj") {
 
                 var input = (' <div class="input-group">\
                                  {{ form.consulta_destinatario_cpf_cnpj(size = 20, class = "form-control", placeholder ="CPF/CNPJ DESTINATARIO" ) }}\
@@ -132,14 +135,22 @@
 
                 document.getElementById('input').innerHTML = input;
 
+            } else if (opcao == "nmr_pedido") {
+
+                var input = (' <div class="input-group">\
+                                {{ form.consulta_nmr_pedido(size = 20, class = "form-control", placeholder ="NÚMERO PEDIDO") }}\
+                        </div > ');
+
+                document.getElementById('input').innerHTML = input;
+
             } else if (opcao == "destinatario_nnota") {
 
                 var input = (' <div class="form-row">\
                     <div class="col">\
-                        {{ form.consulta_destinatario_cpf_cnpj(size = 100, class = "form-control", placeholder = "CPF/CNPJ DESTINATARIO") }}\
+                        {{ form.consulta_nota(size = 20, class = "form-control", placeholder = "NUMERO NOTA FISCAL") }}\
                     </div>\
                     <div class="col">\
-                        {{ form.consulta_nota(size = 20, class = "form-control", placeholder = "NUMERO NOTA FISCAL") }}\
+                        {{ form.consulta_destinatario_cpf_cnpj(size = 100, class = "form-control", placeholder = "CPF/CNPJ DESTINATARIO") }}\
                     </div>\
                 </div> ');
 

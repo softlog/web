@@ -3,16 +3,15 @@ from app.security.forms import FormConsultaEntrega
 from flask import render_template, request, session, redirect, url_for
 from app import app
 
-
 @app.route('/portal/webtracking/', methods=['GET', 'POST'])
 def index_portal_entregas():
 
     ambiente = session.get("ambiente")
     if ambiente is None:
         return redirect('/login/')
-    
+   
 
-    f = Filter()
+    f = Filter() 
     form = FormConsultaEntrega()
     dados = []
     dictDados = []
@@ -23,12 +22,13 @@ def index_portal_entregas():
     consulta_nfe = request.form.get('consulta_nfe')
     data1 = request.form.get('data1')
     data2 = request.form.get('data2')
+    url_contato = f.get_url_contato()[0][0]
 
     if consulta_nfe or consulta_cte or consulta_nota or consulta_destinatario or data1 or data2:
         render_tabela = True
-    else:
+    else: 
         render_tabela = False
-  
+   
     if consulta_nota:
         dados = f.filter_by_numero_nota(consulta_nota) 
     elif consulta_destinatario: 
@@ -60,5 +60,6 @@ def index_portal_entregas():
     return render_template('portal/consulta_entregas/consulta_entrega.html', dados = dictDados, 
                                                            form = form,
                                                            render_tabela = render_tabela,
-                                                           pesquisa = pesquisa)
+                                                           pesquisa = pesquisa,
+                                                           url_contato = url_contato)
 

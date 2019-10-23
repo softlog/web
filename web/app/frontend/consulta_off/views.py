@@ -22,24 +22,25 @@ def index_portal_consulta_off(ambiente):
     consulta_nota = request.form.get('consulta_nota')
     consulta_destinatario = request.form.get('consulta_destinatario')
     consulta_destinatario_cpf_cpnj = request.form.get('consulta_destinatario_cpf_cnpj')
+    consulta_nmr_pedido = request.form.get('consulta_nmr_pedido')
+    url_contato = f.get_url_contato(ambiente)[0][0]
 
-
-    if consulta_nota or consulta_destinatario or consulta_destinatario_cpf_cpnj:
+    if consulta_nota or consulta_destinatario or consulta_destinatario_cpf_cpnj or consulta_nmr_pedido:
         render_tabela = True
     else:
         render_tabela = False
      
     if consulta_destinatario_cpf_cpnj and consulta_nota:
         dados = f.filter_by_cpf_cnpj_nnota(consulta_destinatario_cpf_cpnj, consulta_nota, ambiente) 
-    elif consulta_nota:  
-        dados = f.filter_by_numero_nota(consulta_nota, ambiente) 
     elif consulta_destinatario: 
         dados = f.filter_by_destinatario(consulta_destinatario.upper(), ambiente) 
     elif consulta_destinatario_cpf_cpnj:
         dados = f.filter_by_destinatario_cpf_cnpj(consulta_destinatario_cpf_cpnj, ambiente) 
+    elif consulta_nmr_pedido:
+        dados = f.filter_by_numero_pedido(consulta_nmr_pedido, ambiente) 
     
 
-    if dados:
+    if dados: 
 
         #transforma dados em um dicionario 
         for row in dados: 
@@ -54,5 +55,6 @@ def index_portal_consulta_off(ambiente):
     return render_template('portal/consulta_off/consulta_off.html', dados = dictDados, 
                                                                form = form,
                                                                render_tabela = render_tabela,
-                                                               pesquisa = pesquisa)
+                                                               pesquisa = pesquisa,
+                                                               url_contato = url_contato)
 

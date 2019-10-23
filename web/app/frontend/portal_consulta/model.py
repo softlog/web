@@ -3,10 +3,11 @@ from flask import session
 #from flask import g 
 from flask_login import current_user
 from app.util import format_dmy_to_ymd
+from app import get_uri_db
 
 class Filter:
 
-    select = """
+    select = """ 
         SELECT	
 	        rem.nome_cliente as remetente,
 	        rem.cnpj_cpf cnpj_cpf_remetente,
@@ -29,16 +30,14 @@ class Filter:
             ON scr_notas_fiscais_imp.destinatario_id::integer = dest.codigo_cliente::integer
         LEFT JOIN scr_ocorrencia_edi oco 
             ON oco.codigo_edi::integer = scr_notas_fiscais_imp.id_ocorrencia::integer
-
         """
     cnpj_cliente = current_user
 
     def connect(self, dados):
         
-        ambiente = session.get("ambiente")
+        amb = session.get("ambiente")
 
-        #create_engine(dialect://username:password@host:port/database)
-        engine = create_engine('postgresql://softlog_{}:paulino@pg.softlog.eti.br:5432/softlog_{}'.format(ambiente, ambiente))
+        engine = create_engine(get_uri_db(amb))
         conn = engine.connect()
         result_proxy = conn.execute(dados)
         results = result_proxy.fetchall()
@@ -56,7 +55,7 @@ class Filter:
         """.format(self.cnpj_cliente, self.cnpj_cliente, format_dmy_to_ymd(data1), format_dmy_to_ymd(data2), limite)
  
         return self.connect(dados)
-
+     
     def filter_by_numero_nota(self, nota, limite=10000):
    
         dados = self.select + """
@@ -99,3 +98,21 @@ class Filter:
         """.format(self.cnpj_cliente, self.cnpj_cliente, chave, limite)
 
         return self.connect(dados)
+
+    def get_url_contato(self, limite = 1):
+        
+        codigo_filial = session.get("codigo_filial")
+   
+        dado = """SELECT url_contato 
+                       FROM filial
+                  WHERE codigo_filial LIKE '%%{}%%'
+                  AND url_contato IS NOT NULL
+                  LIMIT {}
+                  """.format(codigo_filial, limite)
+
+        con = self.connect(dado)
+
+        if  con == []:
+            con = [(None,)]
+
+        return con

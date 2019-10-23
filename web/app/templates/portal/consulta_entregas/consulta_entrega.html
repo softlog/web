@@ -91,6 +91,11 @@
 
 
 <script type="text/javascript">
+
+    {% if url_contato %}
+    $("#link_contato").attr("href", "{{url_contato}}");
+    {% endif %}
+
     $(document).ready(function () {
         $('#dataTables-example').DataTable({
             responsive: true,
@@ -162,7 +167,7 @@
 
                 $("#data1").mask("99/99/9999");
                 $("#data2").mask("99/99/9999");
-     
+
                 //$('#data1').datepicker({
                 //    format: "dd/mm/yyyy",
                 //    todayBtn: "linked",
@@ -184,3 +189,4 @@
 </script>
 <br>
 {% endblock %}
+

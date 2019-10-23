@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from flask import render_template
+from flask import render_template, session
 from flask_login import current_user
 from app import get_uri_db
 
@@ -13,6 +13,7 @@ class Filter:
 	        numero_nota_fiscal,
 	        data_emissao,
 	        status,
+            numero_pedido_nf,
             '01' || lpad(fd_get_id_banco_dados(current_database())::text,5,'0') ||
             lpad(id_nota_fiscal_imp::text,12,'0') as codigo_rastreamento,
             oco.ocorrencia::character(50) as ocorrencia
@@ -22,7 +23,6 @@ class Filter:
             ON scr_notas_fiscais_imp.destinatario_id::integer = dest.codigo_cliente::integer
         LEFT JOIN scr_ocorrencia_edi as oco 
             ON oco.codigo_edi::integer = scr_notas_fiscais_imp.id_ocorrencia::integer
-
         """
 
     def connect(self, dados, ambiente):
@@ -45,7 +45,7 @@ class Filter:
         """.format(nota.zfill(9), limite)
 
         return self.connect(dados, ambiente)
-
+       
    
     def filter_by_destinatario(self, destinatario, ambiente, limite=10000):
    
@@ -67,6 +67,16 @@ class Filter:
         """.format(destinatario, limite)
        
         return self.connect(dados, ambiente)
+
+    def filter_by_numero_pedido(self, nmr_pedido, ambiente, limite=10000):
+   
+        dados = self.select + """
+        WHERE
+            numero_pedido_nf LIKE '%%{}%%'
+        LIMIT {}
+        """.format(nmr_pedido, limite)
+       
+        return self.connect(dados, ambiente)
    
     def filter_by_cpf_cnpj_nnota(self, destinatario, nota, ambiente, limite=10000):
    
@@ -78,3 +88,18 @@ class Filter:
         """.format(destinatario, nota.zfill(9), limite)
 
         return self.connect(dados, ambiente)
+
+
+    def get_url_contato(self, ambiente):
+        
+        dado = """SELECT url_contato 
+                  FROM filial 
+                  WHERE  url_contato IS NOT NULL 
+                  LIMIT 1
+               """  
+        con = self.connect(dado, ambiente)
+
+        if  con == []:
+            con = [(None,)]
+
+        return con

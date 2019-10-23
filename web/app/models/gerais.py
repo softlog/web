@@ -296,3 +296,13 @@ class ClienteEnderecos(Model):
 
     def __repr__(self):
         return self.__tablename__
+
+
+class Banco(Model):
+    __tablename__ = 'banco'
+    nome_banco = Column(String(40))
+    id_banco = Column(Integer,Sequence('banco_id_banco_seq'), primary_key=True)
+    numero_banco = Column(String(3))
+
+    def __repr__(self):
+        return self.nome_banco.strip() + " - " + self.numero_banco

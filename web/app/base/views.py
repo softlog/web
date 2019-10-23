@@ -8,7 +8,7 @@ from app.views import SimpleFormView, UtilView
 from app.views import ModelView
 from app.sqla.interface import SQLAInterface
 from app.idioma import lazy_gettext as _
-from app.models.bancos import Banco
+
 from app.models.gerais import Filial, Cidades
 from app.models.treinamento.models_treinamento import NotasFiscais
 from app.security.sqla.models import User
@@ -114,11 +114,6 @@ class NotasFiscaisView(ModelView):
     list_columns = ['chave_nfe', 'numero_nota_fiscal', 'data_emissao', 'valor', 'remetente.nome_cliente']
 
 
-class BancosView(ModelView):
-    datamodel = SQLAInterface(Banco)
-
-    show_column = list_columns = ['id_banco', 'nome_banco', 'numero_banco']
-    add_columns = edit_columns = ['nome_banco', 'numero_banco']
 
         
 appbuilder.add_view_no_menu(UtilView)

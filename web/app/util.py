@@ -87,3 +87,29 @@ def format_dmy_to_ymd(date_str):
         return '{:%Y-%m-%d}'.format(datetime_obj)
     except:
         return None
+
+def get_dados_acesso(codigo_acesso):
+
+    d = {}
+
+    if codigo_acesso > 9999:
+        s_codigo_acesso = str(codigo_acesso)
+        d['codigo_empresa'] = '001'
+        d['codigo_filial'] = s_codigo_acesso[-3:]
+        d['codigo_acesso'] = int(s_codigo_acesso[:-3])
+    else:
+        d['codigo_empresa'] = '001'
+        d['codigo_filial'] = '001'
+        d['codigo_acesso'] = codigo_acesso
+
+    return d
+
+def get_codigo_acesso(codigo_acesso):
+    if codigo_acesso > 9999:
+        s_codigo_acesso = str(codigo_acesso)        
+        return int(s_codigo_acesso[:-3])
+    else:
+        return codigo_acesso
+
+    
+

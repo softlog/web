@@ -4,7 +4,18 @@ import json
 class ProtocolosModel(object):
 
     def get_protocolo(self,data_expedicao,ultimo_id, id_acesso):
+
         """Retorna dados do usuario em formato Json"""
+
+        if id_acesso > 9999:
+            tem_filial = '1'
+            codigo_filial = str(id_acesso)[-3:]
+        else:
+            tem_filial = '0'
+            codigo_filial = ''
+            
+        
+
         if ultimo_id == 0:
             arg_ultimo_id = "NULL"
         else:
@@ -22,7 +33,14 @@ class ProtocolosModel(object):
 		            scr_nf_protocolo 
 	            WHERE
 		            CAST(data_protocolo - INTERVAL'8 hours' as date) = '%s'
-                    AND CASE WHEN %s IS NULL THEN true ELSE id_nf_protocolo > %s END                                
+                    AND CASE WHEN %s IS NULL THEN true ELSE id_nf_protocolo > %s END
+                    AND CASE WHEN 1 = %s THEN 
+                                scr_nf_protocolo.codigo_empresa = '001' AND
+                                scr_nf_protocolo.codigo_filial = '%s'
+                             ELSE
+                                1=1
+                    END
+                        
             )
 	        , p_remetentes AS (
 		        SELECT 
@@ -301,7 +319,12 @@ class ProtocolosModel(object):
                         usuarios, 
                         remetentes
 	        ) row
-            """ % (data_expedicao,arg_ultimo_id, arg_ultimo_id)        
+            """ % (data_expedicao,
+                   arg_ultimo_id, 
+                   arg_ultimo_id, 
+                   tem_filial,
+                   codigo_filial
+                   )        
 
         r = query_db(id_acesso,sql,None,True)
 

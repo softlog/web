@@ -24,9 +24,7 @@ class Filial(ModelSoftlogView):
 
     show_columns = edit_columns = add_columns
     
-    #start_empty = False
-
-
+    start_empty = False
 
 appbuilder.add_view(OlaBaseView, "Ola BaseView", href="/olabaseview/ola_baseview", icon="fa-group", label='Ola Base View',
                      category="Treinamento", category_icon="fa-cogs")

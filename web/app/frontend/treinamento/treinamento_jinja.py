@@ -20,8 +20,6 @@ from app import query_db_2, execute_db
 import json
 
 # Classes Views Banco
-from app.models.bancos import Banco
-from app.frontend.treinamento.forms import FormSearchBancos 
 
 
 @app.route('/treinamento_jinja', methods=['GET', 'POST'])

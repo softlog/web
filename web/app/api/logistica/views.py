@@ -7,9 +7,11 @@ from psycopg2.extras import DictCursor
 from app import query_db, get_db 
 from app.api.model import filial_schema
 from app.util import calcula_hash
+from app import app
 #from app import mail
 from flask_mail import Message
 import traceback
+
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -48,6 +50,13 @@ class SendMail(Resource):
 
     def post(self):
 
+        origin = request.headers.get('origin')
+
+        hosts = ['http://api.softlog.eti.br','http://localhost:8088']
+
+        if origin not in hosts:
+            return abort(403, message="Acesso Negado")
+
         a = request.args
         print(a)
         parser = reqparse.RequestParser()
@@ -78,11 +87,9 @@ class SendMail(Resource):
 
         response = jsonify(operacao)
 
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:8088')
+        response.headers.add('Access-Control-Allow-Origin', origin)
 
         return response
-
-
 
 
 
@@ -450,10 +457,11 @@ def send_mail_anexo_sendgrid(p_sender,p_recipients,p_cc,p_subject,p_message,p_fi
     vConteudoAnexo  = p_stream_anexo
 
 
-    smtpserver = 'smtp.sendgrid.net'
-    AUTHREQUIRED = 1 			  # if you need to use SMTP AUTH set to 1
-    smtpuser = 'softlogtecnologia'  	  # for SMTP AUTH, set SMTP username here
-    smtppass = 'softrans321@foxtotal'  		  # for SMTP AUTH, set SMTP password here
+    smtpserver = app.config.get('MAIL_SERVER')
+    AUTHREQUIRED = 1 			                  # if you need to use SMTP AUTH set to 1
+    smtpuser = app.config.get('MAIL_USERNAME')  	  # for SMTP AUTH, set SMTP username here
+    smtppass = app.config.get('MAIL_PASSWORD') 		  # for SMTP AUTH, set SMTP password here
+
     try:
         server = smtplib.SMTP(smtpserver, port=587)
     except:

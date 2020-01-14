@@ -66,7 +66,7 @@ class BaseView(object):
         Use it like this if you want to restrict your view to readonly::
 
             class MyView(ModelView):
-                base_permissions = ['can_list','can_show']
+                base_permissions = ['Listar','Visualizar']
     """
 
     default_view = 'list'

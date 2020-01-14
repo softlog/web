@@ -31,7 +31,8 @@ from app.models.gerais import ClientesBaseSefaz, CidadesSerpro
 
 class EmpresasBrasil(ModelSoftlogView):
     datamodel = SQLAInterface(ClientesBaseSefaz)
-    base_permissions = ['can_list', 'can_show']
+    base_permissions = ['Listar', 'Visualizar']
+    
 
     list_columns = ['cnpj','razao_social','situacao','endereco','numero',
                       'complemento','bairro','nome_cidade','cep','telefones','email','cnae','inicio_atividade']

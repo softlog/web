@@ -10,9 +10,7 @@ import requests
 import json
 from math import ceil
 
-
 logger = get_task_logger(__name__)
-
 
 @celery.task(bind=True,name='tasks.importa_docs_task')
 def importa_docs_task(self,id_db,lst_notas, lst_clientes,id_db_main,acesso,tp_romaneio):

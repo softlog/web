@@ -49,7 +49,7 @@ class Rastreamento(object):
 		        LEFT JOIN cidades c
 			        ON nf.calculado_ate_id_cidade = c.id_cidade
                 LEFT JOIN edi_ocorrencias_entrega img
-				    ON img.id_nota_fiscal_imp = nf.id_nota_fiscal_imp
+				    ON img.id_nota_fiscal_imp = nf.id_nota_fiscal_imp                
                 LEFT JOIN filial
 				    ON filial.codigo_filial = nf.filial_emitente 
 					    AND filial.codigo_empresa = nf.empresa_emitente

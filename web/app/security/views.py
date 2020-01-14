@@ -70,7 +70,8 @@ def login_frontend(x_ambiente):
             if x_ambiente is None:
                 return render_template('security/login.html',msg="Usuário ou Senha incorreto!",form=form)
             else:
-                return render_template('security/login.html/%s' % x_ambiente, msg="Usuário ou Senha incorreto!",form=form)
+                return redirect('/login/%s' % x_ambiente)
+                #return render_template('security/login.html' % x_ambiente, msg="Usuário ou Senha incorreto!",form=form)
         
 
         filial = db.session.query(Filial)\

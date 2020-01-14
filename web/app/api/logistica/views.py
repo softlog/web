@@ -7,6 +7,22 @@ from psycopg2.extras import DictCursor
 from app import query_db, get_db 
 from app.api.model import filial_schema
 from app.util import calcula_hash
+#from app import mail
+from flask_mail import Message
+import traceback
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.encoders import encode_base64
+from email.utils import formatdate, make_msgid
+from email import generator
+from time import localtime, strftime
+import smtplib
+import re
+from datetime import datetime
+import time
+
 
 
 from app.api.logistica.documentos import Usuarios, Romaneios, Imagens, Trackings
@@ -26,6 +42,50 @@ from marshmallow import ValidationError
 softlog = Blueprint('softlog',__name__)
 
 api = Api(softlog)
+
+
+class SendMail(Resource):
+
+    def post(self):
+
+        a = request.args
+        print(a)
+        parser = reqparse.RequestParser()
+        
+        parser.add_argument('sender',type=str,help='O sender do email')
+        parser.add_argument('titulo',type=str,help='O titulo do email')
+        parser.add_argument('mensagem',type=str,help='Mensagem a ser enviada')
+        parser.add_argument('email',type=str,help='O email para envio')
+        
+        args = parser.parse_args()
+
+        sender = args.get("sender")
+        titulo = args.get("titulo")
+        mensagem = args.get('mensagem')
+        email = args.get('email')
+
+        #print(mensagem)
+        #print(args.get('conferencias'))
+
+        r = send_mail_anexo_sendgrid(sender, email,"",titulo, mensagem, None, None, None)
+        
+        #print("Resposta ",r)
+        #r = 1
+        if r == 0:
+            operacao = 'ok'
+        else:
+            operacao = ''
+
+        response = jsonify(operacao)
+
+        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:8088')
+
+        return response
+
+
+
+
+
 
 
 class Hello(Resource):
@@ -368,6 +428,101 @@ class VuuptOcorrencia(Resource):
         VuuptModel.set_vuupt_ocorrencias(self,53, data)
         return {"resultado":"Ok"}
 
+
+
+def send_mail_anexo_sendgrid(p_sender,p_recipients,p_cc,p_subject,p_message,p_filename_anexo,p_stream_anexo, p_nome_msg):
+
+    # Date: 26/04/2006
+	# Retorno: 	0 - Envio Ok.
+	#		1 - Nao foi possivel conectar ao servidor de email
+	#		2 - Falha de autenticao
+	#		3 - Falha de envio.
+
+    
+    vSender         = p_sender
+    vRecipients     = p_recipients
+    vRecipients     = vRecipients.replace(';',',')
+    #vRecipients     = 'paulo.sergio@softlog.eti.br,nilton.paulino@softlog.eti.br,paulo.sergio.softlog@gmail.com'
+    vCc             = p_cc
+    vSubject        = p_subject
+    vMessage        = p_message
+    vNomeAnexo      = p_filename_anexo
+    vConteudoAnexo  = p_stream_anexo
+
+
+    smtpserver = 'smtp.sendgrid.net'
+    AUTHREQUIRED = 1 			  # if you need to use SMTP AUTH set to 1
+    smtpuser = 'softlogtecnologia'  	  # for SMTP AUTH, set SMTP username here
+    smtppass = 'softrans321@foxtotal'  		  # for SMTP AUTH, set SMTP password here
+    try:
+        server = smtplib.SMTP(smtpserver, port=587)
+    except:
+        #print(traceback.format_exc())
+        return 1
+
+    msg = MIMEMultipart('related')
+    msg['Subject'] = vSubject
+    msg['Date'] = strftime("%a, %d %b %Y %H:%M:%S -0300", localtime())
+    msg['Cc'] = vCc
+    msg['From'] = vSender
+    msg['To'] = vRecipients
+
+    msg.preamble = 'This is a multi-part message in MIME format.'
+    msgAlternative = MIMEMultipart('alternative')
+    msg.attach(msgAlternative)
+
+    # Expressao regular de http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/440481
+
+    t = re.sub("< */? *\w+ */?\ *>", "", vMessage)
+    msgText = MIMEText(t)
+    msgAlternative.attach(msgText)
+
+    msgText = MIMEText(vMessage,'html','utf-8')
+    msgAlternative.attach(msgText)
+
+    if vNomeAnexo is not None and vConteudoAnexo is not None:
+        header = 'Content-Disposition', 'attachment; filename="%s"' % vNomeAnexo
+        anexo = MIMEBase('application',"octet-stream")
+        anexo.set_payload(bytes(vConteudoAnexo,'utf-8'))
+        encode_base64(anexo)
+        anexo.add_header(*header)
+        msg.attach(anexo)
+
+    if vNomeAnexo is not None and vConteudoAnexo is None:
+        part = MIMEBase('application', "octet-stream")
+        part.set_payload(open(vNomeAnexo, "rb").read())
+        encode_base64(part)
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'%vNomeAnexo)
+        msg.attach(part)
+
+
+    vRetorno = ''
+
+    if AUTHREQUIRED:
+        try:
+            server.login(smtpuser, smtppass)
+        except socket.error as erro:
+            print(traceback.format_exc())
+            vRetorno = 2
+
+        listaR = vRecipients.split(',')
+        listaR = [ x.strip() for x in listaR]
+        try:
+            smtpresult = server.sendmail(vSender, listaR, msg.as_string())
+        except Exception as e:
+            print(traceback.format_exc())
+            #print('Falha de envio')
+            return 3
+##            for recipient in listaR:
+##                smtpresult = server.sendmail(vSender, recipient.strip(), msg.as_string())
+##                print ("Enviando email para ",recipient.strip())
+##                vRetorno = 0
+
+
+    server.quit()
+    return 0
+
+
 api.add_resource(Hello,'/hello')
 api.add_resource(Usuario,'/usuario/<int:codigo_acesso>/<login>')
 api.add_resource(Usuario2,'/usuario2/<int:codigo_acesso>/<cpf>')
@@ -386,3 +541,4 @@ api.add_resource(Ocorrencias2,'/ocorrencia')
 api.add_resource(Imagem2,'/imagem')
 api.add_resource(Tracking,'/tracking')
 api.add_resource(VuuptOcorrencia,'/vuupt/ocorrencias')
+api.add_resource(SendMail,'/send_mail')

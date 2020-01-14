@@ -392,4 +392,23 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/python
-
+builder
+CodeGraphData
+files_old
+Backup
+/vim.exe.stackdump
+/web/config.py
+/web.sln
+/web/app.wsgi
+/web/config_teste.py
+/web/log.txt
+/web/teste.log - info
+/web/requirements.txt
+/web/run.py
+/web/web.config
+/web/web.debug.config
+/web/web.pyproj
+/WE-Palette.css
+/web/docs
+/.gitignore
+/.gitattributes

@@ -3,7 +3,7 @@ from ..idioma import lazy_gettext
 from .widgets import ChartWidget, DirectChartWidget
 from .jsontools import dict_to_json
 from ..widgets import SearchWidget
-from ..security.decorators import has_access
+from ..security.decorators import has_access, permission_name
 from ..baseviews import BaseModelView, expose
 from ..urltools import *
 from app.sqla.models.group import GroupByProcessData, DirectProcessData
@@ -186,6 +186,7 @@ class GroupByChartView(BaseChartView):
     @expose('/chart/<group_by>')
     @expose('/chart/')
     @has_access
+    @permission_name("Grafico")
     def chart(self, group_by=0):
         group_by = int(group_by)
         form = self.search_form.refresh()
@@ -353,6 +354,7 @@ class ChartView(BaseSimpleGroupByChartView):
     @expose('/chart/<group_by>')
     @expose('/chart/')
     @has_access
+    @permission_name("Grafico")
     def chart(self, group_by=''):
         form = self.search_form.refresh()
         get_filter_args(self._filters)
@@ -417,6 +419,7 @@ class TimeChartView(BaseSimpleGroupByChartView):
     @expose('/chart/<group_by>/<period>')
     @expose('/chart/')
     @has_access
+    @permission_name("Grafico")
     def chart(self, group_by='', period=''):
         form = self.search_form.refresh()
         get_filter_args(self._filters)
@@ -460,6 +463,7 @@ class DirectChartView(BaseSimpleDirectChartView):
     @expose('/chart/<group_by>')
     @expose('/chart/')
     @has_access
+    @permission_name("Grafico")
     def chart(self, group_by=''):
         form = self.search_form.refresh()
         get_filter_args(self._filters)

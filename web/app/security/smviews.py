@@ -18,7 +18,7 @@ from app.fieldwidgets import BS3PasswordFieldWidget
 from app.actions import action
 from app._compat import as_unicode
 from .forms import LoginForm_db, LoginForm_oid, ResetPasswordForm, UserInfoEdit, LoginForm_dbTny
-from .decorators import has_access
+from .decorators import has_access, permission_name
 from app.widgets import ListLinkWidget, ListWidget
 
 log = logging.getLogger(__name__)
@@ -261,6 +261,7 @@ class Usuarios(UserModelView):
 
     @expose('/show/<pk>', methods=['GET'])
     @has_access
+    @permission_name("Visualizar")
     def show(self, pk):
         actions = {}
         actions['resetpasswords'] = self.actions.get('resetpasswords')
@@ -279,6 +280,7 @@ class Usuarios(UserModelView):
 
     @expose('/userinfo/')
     @has_access
+    @permission_name("InformacaoUsuario")
     def userinfo(self):
         actions = {}
         actions['resetmypassword'] = self.actions.get('resetmypassword')
@@ -294,10 +296,12 @@ class Usuarios(UserModelView):
         )
 
     @action('resetmypassword', lazy_gettext("Reset my password"), "", "fa-lock", multiple=False)
+    @permission_name("RedefinirMinhaSenha")
     def resetmypassword(self, item):
         return redirect(url_for(self.appbuilder.sm.resetmypasswordview.__name__ + '.this_form_get'))
 
     @action('resetpasswords', lazy_gettext("Reset Password"), "", "fa-lock", multiple=False)
+    @permission_name("RedefinirSenha")
     def resetpasswords(self, item):
         return redirect(url_for(self.appbuilder.sm.resetpasswordview.__name__ + '.this_form_get', pk=item.id))
 

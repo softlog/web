@@ -2,6 +2,8 @@ from app.flask_custom import Flask
 from flask import Response, current_app, g, make_response, render_template, request, session
 from flask import _app_ctx_stack, escape
 from flask_login import current_user
+from flask_mail import Mail
+
 
 import traceback
 import psycopg2
@@ -50,10 +52,13 @@ login.login_view = "login_frontend"
 app = Flask('app')
 app.config.from_object('config')
 
+
 auth = HTTPBasicAuth()
 db = SQLA(app)
 db2 = SQLA(app)
 login.init_app(app)
+mail = Mail(app)
+
 appbuilder = AppBuilder(app,db2.session)
 #appbuilder = AppBuilder(app,db.session)
 
@@ -464,18 +469,18 @@ from app.frontend.consulta_off import views
 
 from app.frontend.cadastros import views_cadastros
 
-from app.frontend.treinamento import base_views
+#from app.frontend.treinamento import base_views
 
 #Importa visoes base
 from app.base import index_view
 from app.base import main_view
 from app.base import views
-from app.frontend.treinamento import views
+#from app.frontend.treinamento import views
 
 from app.frontend.portal.consulta_base_sefaz import views_consulta_base_sefaz
 #import app.baseviews
 
-from app.frontend.treinamento import treinamento_wtf
-from app.frontend.treinamento import treinamento_jinja
+#from app.frontend.treinamento import treinamento_wtf
+#from app.frontend.treinamento import treinamento_jinja
 #result = add_together.delay(10,20)
 #result.wait()

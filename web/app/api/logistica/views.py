@@ -51,9 +51,11 @@ class SendMail(Resource):
     def post(self):
 
         origin = request.headers.get('origin')
+        
+        hosts = ['http://api.softlog.eti.br','http://localhost:8088', 'http://www.bsbexpress.com.br',
+            'https://raspy-band-0199.bss.design', 'http://172.27.240.1:8000']
 
-        hosts = ['http://api.softlog.eti.br','http://localhost:8088']
-
+        
         if origin not in hosts:
             return abort(403, message="Acesso Negado")
 
@@ -69,6 +71,7 @@ class SendMail(Resource):
         args = parser.parse_args()
 
         sender = args.get("sender")
+        
         titulo = args.get("titulo")
         mensagem = args.get('mensagem')
         email = args.get('email')
@@ -76,14 +79,14 @@ class SendMail(Resource):
         #print(mensagem)
         #print(args.get('conferencias'))
 
-        r = send_mail_anexo_sendgrid(sender, email,"",titulo, mensagem, None, None, None)
+        r = send_mail_anexo('softlog@softlog.eti.br', email,sender,"",titulo, mensagem, None, None, None)
         
         #print("Resposta ",r)
         #r = 1
         if r == 0:
             operacao = 'ok'
         else:
-            operacao = ''
+            operacao = str(r)
 
         response = jsonify(operacao)
 
@@ -429,7 +432,7 @@ class VuuptOcorrencia(Resource):
         # data in string format and you have to parse into dictionary
         data = request.data.decode()
         #dataDict = json.loads(data)
-        print(data)
+        #print(data)
         
         
         VuuptModel.set_vuupt_ocorrencias(self,53, data)
@@ -437,7 +440,7 @@ class VuuptOcorrencia(Resource):
 
 
 
-def send_mail_anexo_sendgrid(p_sender,p_recipients,p_cc,p_subject,p_message,p_filename_anexo,p_stream_anexo, p_nome_msg):
+def send_mail_anexo(p_sender,p_recipients, p_replay_to, p_cc,p_subject,p_message,p_filename_anexo,p_stream_anexo, p_nome_msg):
 
     # Date: 26/04/2006
 	# Retorno: 	0 - Envio Ok.
@@ -458,14 +461,17 @@ def send_mail_anexo_sendgrid(p_sender,p_recipients,p_cc,p_subject,p_message,p_fi
 
 
     smtpserver = app.config.get('MAIL_SERVER')
+    smtpport = app.config.get('MAIL_PORT')
+    #print("Servidor de email", smtpserver)
+
     AUTHREQUIRED = 1 			                  # if you need to use SMTP AUTH set to 1
     smtpuser = app.config.get('MAIL_USERNAME')  	  # for SMTP AUTH, set SMTP username here
     smtppass = app.config.get('MAIL_PASSWORD') 		  # for SMTP AUTH, set SMTP password here
 
     try:
-        server = smtplib.SMTP(smtpserver, port=587)
+        server = smtplib.SMTP(smtpserver, smtpport)
     except:
-        #print(traceback.format_exc())
+        print(traceback.format_exc())
         return 1
 
     msg = MIMEMultipart('related')
@@ -474,7 +480,7 @@ def send_mail_anexo_sendgrid(p_sender,p_recipients,p_cc,p_subject,p_message,p_fi
     msg['Cc'] = vCc
     msg['From'] = vSender
     msg['To'] = vRecipients
-
+    msg['Reply-to'] = p_replay_to
     msg.preamble = 'This is a multi-part message in MIME format.'
     msgAlternative = MIMEMultipart('alternative')
     msg.attach(msgAlternative)

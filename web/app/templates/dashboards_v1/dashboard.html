@@ -85,7 +85,7 @@
 {% if a.skip_row == "1" %}</div>{% endif %}
 <div class="{{a.class_row}}" {%if a.style_row %} style="{{a.style_row}}" {% endif %}>
     {% endif %}
-    {{lib.render_widget(a.type_widget,a.conf, a.lg, a.md, a.sm, a.xs, a.btn_close, a.btn_setting, a.btn_colapse)}}
+        {{lib.render_widget(a.type_widget,a.conf, a.lg, a.md, a.sm, a.xs, a.btn_close, a.btn_setting, a.btn_colapse)}}
     {% endfor %}
 </div>
 {% else %}

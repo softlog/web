@@ -23,17 +23,18 @@ class ProtocolosModel(object):
 
         sql = """WITH p AS (
 	            SELECT 
-		            id_nf_protocolo,
-		            data_protocolo,
-		            data_conferencia,
-		            usuario_protocolo,
-		            usuario_conferencia,
-		            status
+		            scr_nf_protocolo.id_nf_protocolo,
+		            scr_nf_protocolo.data_protocolo,
+		            scr_nf_protocolo.data_conferencia,
+		            scr_nf_protocolo.usuario_protocolo,
+		            scr_nf_protocolo.usuario_conferencia,
+		            scr_nf_protocolo.status
 	            FROM 
-		            scr_nf_protocolo 
+		            scr_nf_protocolo 		            
 	            WHERE
-		            CAST(data_protocolo - INTERVAL'8 hours' as date) = '%s'
-                    AND CASE WHEN %s IS NULL THEN true ELSE id_nf_protocolo > %s END
+			        1=1			        
+		            AND CAST(data_protocolo - INTERVAL'8 hours' as date) = '%s'
+                    AND CASE WHEN %s IS NULL THEN true ELSE scr_nf_protocolo.id_nf_protocolo > %s END
                     AND CASE WHEN 1 = %s THEN 
                                 scr_nf_protocolo.codigo_empresa = '001' AND
                                 scr_nf_protocolo.codigo_filial = '%s'
@@ -88,6 +89,8 @@ class ProtocolosModel(object):
 			            ON t.id_nf_protocolo = p.id_nf_protocolo
 		            LEFT JOIN usuarios u1 
 			            ON u1.id_usuario = usuario_protocolo	
+                WHERE 
+                    t.id_setor IS NOT NULL
 	        )
 	        , remetentes AS (
 	            WITH temp AS (
@@ -296,6 +299,7 @@ class ProtocolosModel(object):
 					            ON bloco_p_setor.id_nf_protocolo = p.id_nf_protocolo
 		                    WHERE 
 				        bloco_p_setor.id_nf_protocolo IS NOT NULL
+                        
 		            ) row
 		
 	            )

@@ -33,13 +33,14 @@ class Rastreamento(object):
 		        r.nome_cliente as remetente_nome,
 		        d.nome_cliente as destinatario_nome,
 		        trim(c.nome_cidade) || '-' || (c.uf) as destino,
-                img.url_imagem,
+                COALESCE(img.url_imagem, f_get_url_canhoto(nf.id_conhecimento,1), f_get_url_canhoto(nf.id_nota_fiscal_imp,3)) as url_imagem,
                 trim(filial.razao_social) as transportadora,
                 trim(filial.url_site) as url_site,
                 trim(filial.url_contato) as url_contato,
                 trim(filial.dados_contato) as dados_contato,
                 trim(filial.url_facebook) as url_facebook,
-                trim(filial.url_linkedin) as url_linkedin
+                trim(filial.url_linkedin) as url_linkedin,
+                trim(filial.link_logo) as url_logo
 	        FROM
 		        scr_notas_fiscais_imp nf
 		        LEFT JOIN cliente r
@@ -49,7 +50,7 @@ class Rastreamento(object):
 		        LEFT JOIN cidades c
 			        ON nf.calculado_ate_id_cidade = c.id_cidade
                 LEFT JOIN edi_ocorrencias_entrega img
-				    ON img.id_nota_fiscal_imp = nf.id_nota_fiscal_imp                
+				    ON img.id_nota_fiscal_imp = nf.id_nota_fiscal_imp                  
                 LEFT JOIN filial
 				    ON filial.codigo_filial = nf.filial_emitente 
 					    AND filial.codigo_empresa = nf.empresa_emitente
@@ -71,6 +72,7 @@ class Rastreamento(object):
                 dados_contato,
                 url_facebook,
                 url_linkedin,
+                url_logo,
 		        situacao.situacoes as situacoes
 	        FROM 
 		        geral,
